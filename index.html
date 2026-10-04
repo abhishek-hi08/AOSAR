@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectX | Built for the Future</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --font-sans: 'Inter', sans-serif;
+            --indigo-accent: #6366f1;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Background ShapeGrid --- */
+        #shapegrid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: auto; /* Needs to catch mouse moves */
+            background-color: #050505;
+        }
+
+        /* --- Navbar --- */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- ScrollExpand (Hero) --- */
+        .scroll-expand-container {
+            position: relative;
+            width: 100%;
+            height: 250vh; /* Extra height to scroll through */
+        }
+
+        .scroll-expand-stage {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-expand-frame {
+            position: absolute;
+            inset: 0;
+            /* Initial state matching React component defaults */
+            clip-path: inset(21% 29% 21% 29% round 24px);
+            will-change: clip-path;
+        }
+
+        .scroll-expand-media {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.35);
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .scroll-expand-scrim {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 50%);
+            opacity: 0.45; /* Starts somewhat visible, fades in or out based on logic */
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-expand-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            will-change: opacity, transform;
+        }
+
+        /* --- AccordionGallery (Team Section) --- */
+        .team-section {
+            position: relative;
+            z-index: 10;
+            padding: 6rem 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8) 20%, #000 100%);
+        }
+
+        .accordion-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 2rem auto;
+            height: 400px;
+            perspective: 1400px;
+            perspective-origin: 50% 50%;
+        }
+
+        .ag-panel {
+            position: relative;
+            flex: 1 1 0;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            background: #0a0713;
+            box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+            will-change: flex-grow, transform;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .ag-panel:hover {
+            box-shadow: 0 0 0 2px var(--indigo-accent), 0 15px 40px -10px rgba(0, 0, 0, 0.9);
+        }
+
+        .ag-panel-frame {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .ag-panel-media-wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 320px;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            will-change: transform, filter;
+            filter: grayscale(1); /* Default to inactive state */
+        }
+
+        .ag-panel-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .ag-panel-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, transparent 45%, rgba(6, 0, 16, 0.8) 100%);
+            opacity: 0.8;
+            transition: opacity 0.4s ease;
+        }
+
+        .ag-panel-label {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .ag-panel-bar {
+            flex: 0 0 auto;
+            width: 3px;
+            height: 26px;
+            border-radius: 3px;
+            background: var(--indigo-accent);
+            opacity: 0;
+            transform: translateX(-14px);
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+        }
+
+        .ag-panel-text {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.25rem;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-14px);
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+        }
+
+        /* --- Custom Modal Transitions --- */
+        #team-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        #team-modal-content {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            transform: scale(0.95) translateY(10px);
+            opacity: 0;
+        }
+        
+        #team-modal.modal-active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        #team-modal.modal-active #team-modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            .accordion-row {
+                flex-direction: column;
+                height: 800px;
+                perspective: none;
+            }
+            .ag-panel-media-wrap {
+                width: 100%;
+                height: 200px;
+            }
+            .ag-panel-bar, .ag-panel-text {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .scroll-expand-frame {
+                clip-path: inset(10% 10% 10% 10% round 16px) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="shapegrid-canvas"></canvas>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center font-bold text-white text-xl shadow-lg shadow-indigo-500/40">
+                        X
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight text-white">ProjectX</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Platform</a>
+                    <a href="#team" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Team</a>
+                    <a href="#" class="text-sm font-semibold text-gray-300 hover:text-white transition-colors">Enterprise</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="px-5 py-2.5 text-sm font-bold bg-white text-black rounded-full hover:bg-gray-200 transition-all shadow-lg active:scale-95">
+                        Start Building
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="scroll-expand-container" id="hero-scroll">
+        <div class="scroll-expand-stage">
+            <div class="scroll-expand-frame" id="hero-frame">
+                <img class="scroll-expand-media" id="hero-media" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Abstract futuristic landscape">
+                <div class="scroll-expand-scrim" id="hero-scrim"></div>
+            </div>
+            
+            <div class="scroll-expand-content" id="hero-content">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-xl text-white">
+                    Beyond Boundaries
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl drop-shadow-md">
+                    The framework opens up as you move forward. We hand the whole stage to your ideas, scaling seamlessly from pixel to production.
+                </p>
+                <div class="mt-12 animate-bounce opacity-70">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-2 text-indigo-400">Scroll to Explore</p>
+                    <svg class="w-6 h-6 mx-auto text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team-section">
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-white">Meet the Visionaries</h2>
+            <p class="text-gray-400 text-lg">Click on any profile to learn more about the minds shaping the future of web experiences.</p>
+        </div>
+
+        <!-- Row 1: 5 Members -->
+        <div class="accordion-row" id="team-row-1">
+            <!-- Note: data-img, data-name, and data-desc fuel the Modal functionality -->
+            <div class="ag-panel" 
+                 data-name="Alice - CEO" 
+                 data-img="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1200" 
+                 data-desc="Alice is a visionary leader with over 15 years of experience in scaling tech startups. She thrives on building company culture, securing strategic partnerships, and driving ProjectX's global expansion. Her philosophy is simple: empower the team and the product will follow.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600" alt="Alice"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Alice - CEO</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Bob - CTO" 
+                 data-img="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="Bob is our resident tech wizard. With a background in scalable cloud architecture and AI integration, he ensures that our underlying systems are robust, secure, and ready for massive scale. In his free time, he contributes heavily to open-source infrastructure projects.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600" alt="Bob"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Bob - CTO</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Charlie - Design" 
+                 data-img="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="An award-winning UI/UX designer, Charlie believes that software should be as beautiful as it is functional. He leads the creative direction of ProjectX, ensuring pixel perfection and intuitive user flows that delight our customers on every device.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600" alt="Charlie"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Charlie - Design</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Diana - Product" 
+                 data-img="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="Diana is the strategic mind bridging our technical capabilities with user needs. She spends her days analyzing market trends, talking directly to our enterprise clients, and mapping out a product roadmap that keeps us three steps ahead of the competition.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=600" alt="Diana"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Diana - Product</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Ethan - Lead Dev" 
+                 data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="Ethan is a full-stack powerhouse. Whether he's optimizing complex database queries or fine-tuning frontend animations in WebGL, he executes with precision. He mentors junior developers and ensures our codebase remains clean and maintainable.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Ethan"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Ethan - Lead Dev</div></div>
+            </div>
+        </div>
+
+        <!-- Row 2: 4 Members -->
+        <div class="accordion-row max-w-5xl" id="team-row-2">
+            <div class="ag-panel" 
+                 data-name="Fiona - Marketing" 
+                 data-img="https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="Fiona is a growth hacker and brand strategist. She knows how to tell a compelling story that resonates with our target audience. From viral social campaigns to enterprise whitepapers, Fiona drives the voice of ProjectX.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1598550874175-4d0ef436c909?auto=format&fit=crop&q=80&w=600" alt="Fiona"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Fiona - Marketing</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="George - Sales" 
+                 data-img="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="George is an enterprise relationship master. He understands the complex buying cycles of Fortune 500 companies and works closely with them to architect solutions that solve real business problems using our platform.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600" alt="George"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">George - Sales</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Hannah - QA" 
+                 data-img="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="Detail-oriented and relentlessly thorough, Hannah is our automated testing guru. She builds the testing frameworks that ensure every release is stable, catching edge cases and bugs long before they ever reach our users.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600" alt="Hannah"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Hannah - QA</div></div>
+            </div>
+            <div class="ag-panel" 
+                 data-name="Ian - Support" 
+                 data-img="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=1200"
+                 data-desc="As the ultimate customer advocate, Ian leads our support engineering team. He is a technical problem solver who goes above and beyond to ensure our clients are successful. His feedback loop directly influences our product development.">
+                <div class="ag-panel-frame">
+                    <div class="ag-panel-media-wrap"><img class="ag-panel-media" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=600" alt="Ian"></div>
+                    <div class="ag-panel-overlay"></div>
+                </div>
+                <div class="ag-panel-label"><div class="ag-panel-bar"></div><div class="ag-panel-text">Ian - Support</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hidden by default via opacity-0 and pointer-events-none -->
+    <div id="team-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none invisible">
+        <!-- Blurred dark backdrop -->
+        <div id="team-modal-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-md cursor-pointer"></div>
+        
+        <!-- Modal Content Container -->
+        <div id="team-modal-content" class="relative z-10 w-full max-w-4xl mx-4 bg-slate-900 border border-slate-700/50 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            
+            <!-- Close Button -->
+            <button id="close-modal-btn" class="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-indigo-600 rounded-full text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Image Section -->
+            <div class="w-full md:w-1/2 h-64 md:h-[500px] relative">
+                <div class="absolute inset-0 bg-indigo-900/20 animate-pulse" id="modal-img-placeholder"></div>
+                <img id="modal-image" src="" alt="Team Member" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500">
+            </div>
+
+            <!-- Text Section -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-slate-900 to-black">
+                <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-400 uppercase bg-indigo-500/10 border border-indigo-500/20 rounded-full w-max">
+                    Team Member
+                </div>
+                <h3 id="modal-name" class="text-3xl md:text-4xl font-bold text-white mb-6">Name</h3>
+                <p id="modal-desc" class="text-slate-300 text-lg leading-relaxed mb-8">
+                    Description goes here...
+                </p>
+                <div class="flex gap-4 mt-auto pt-4 border-t border-slate-800">
+                    <button class="px-5 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20">
+                        Connect on LinkedIn
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-12 text-gray-500 border-t border-white/5 relative z-10 bg-black">
+        <p>&copy; 2026 ProjectX Inc. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Utility for clamping values
+        const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+        // Smoothstep function for easing scroll animations
+        const smoothstep = (edge0, edge1, x) => {
+            const t = clamp((x - edge0) / (edge1 - edge0 || 1e-6), 0, 1);
+            return t * t * (3 - 2 * t);
+        };
+
+        // ==========================================
+        // 1. ShapeGrid Background Logic
+        // ==========================================
+        const initShapeGrid = () => {
+            const canvas = document.getElementById('shapegrid-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            const config = {
+                squareSize: 40,
+                speed: 0.5,
+                borderColor: 'rgba(255, 255, 255, 0.04)',
+                hoverFillColor: 'rgba(99, 102, 241, 0.15)', // Indigo
+                trailAmount: 5
+            };
+
+            let width, height, numX, numY;
+            let offset = { x: 0, y: 0 };
+            let hoveredCell = null;
+            let trail = [];
+            let cellOpacities = new Map();
+
+            const resize = () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                numX = Math.ceil(width / config.squareSize) + 3;
+                numY = Math.ceil(height / config.squareSize) + 3;
+            };
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            const drawGrid = () => {
+                ctx.clearRect(0, 0, width, height);
+
+                const sSize = config.squareSize;
+                const offsetX = ((offset.x % sSize) + sSize) % sSize;
+                const offsetY = ((offset.y % sSize) + sSize) % sSize;
+
+                for (let col = -2; col < numX; col++) {
+                    for (let row = -2; row < numY; row++) {
+                        const sx = col * sSize + offsetX;
+                        const sy = row * sSize + offsetY;
+                        const key = `${col},${row}`;
+                        const alpha = cellOpacities.get(key);
+
+                        if (alpha > 0.01) {
+                            ctx.globalAlpha = alpha;
+                            ctx.fillStyle = config.hoverFillColor;
+                            ctx.fillRect(sx, sy, sSize, sSize);
+                            ctx.globalAlpha = 1;
+                        }
+
+                        ctx.strokeStyle = config.borderColor;
+                        ctx.strokeRect(sx, sy, sSize, sSize);
+                    }
+                }
+
+                // Vignette overlay
+                const gradient = ctx.createRadialGradient(
+                    width / 2, height / 2, 0,
+                    width / 2, height / 2, Math.sqrt(width ** 2 + height ** 2) / 2
+                );
+                gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+            };
+
+            const updateOpacities = () => {
+                const targets = new Map();
+                if (hoveredCell) {
+                    targets.set(`${hoveredCell.x},${hoveredCell.y}`, 1);
+                }
+                trail.forEach((t, i) => {
+                    const key = `${t.x},${t.y}`;
+                    if (!targets.has(key)) {
+                        targets.set(key, (trail.length - i) / (trail.length + 1));
+                    }
+                });
+
+                for (const [key] of targets) {
+                    if (!cellOpacities.has(key)) cellOpacities.set(key, 0);
+                }
+
+                for (const [key, opacity] of cellOpacities.entries()) {
+                    const target = targets.get(key) || 0;
+                    const next = opacity + (target - opacity) * 0.15;
+                    if (next < 0.005) {
+                        cellOpacities.delete(key);
+                    } else {
+                        cellOpacities.set(key, next);
+                    }
+                }
+            };
+
+            const animate = () => {
+                // Diagonal movement
+                offset.x = (offset.x - config.speed + config.squareSize) % config.squareSize;
+                offset.y = (offset.y - config.speed + config.squareSize) % config.squareSize;
+
+                updateOpacities();
+                drawGrid();
+                requestAnimationFrame(animate);
+            };
+
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                const offsetX = ((offset.x % config.squareSize) + config.squareSize) % config.squareSize;
+                const offsetY = ((offset.y % config.squareSize) + config.squareSize) % config.squareSize;
+
+                const col = Math.floor((mouseX - offsetX) / config.squareSize);
+                const row = Math.floor((mouseY - offsetY) / config.squareSize);
+
+                if (!hoveredCell || hoveredCell.x !== col || hoveredCell.y !== row) {
+                    if (hoveredCell) {
+                        trail.unshift({ ...hoveredCell });
+                        if (trail.length > config.trailAmount) trail.length = config.trailAmount;
+                    }
+                    hoveredCell = { x: col, y: row };
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                if (hoveredCell) {
+                    trail.unshift({ ...hoveredCell });
+                    if (trail.length > config.trailAmount) trail.length = config.trailAmount;
+                }
+                hoveredCell = null;
+            });
+
+            animate();
+        };
+
+        // ==========================================
+        // 2. ScrollExpand Hero Logic
+        // ==========================================
+        const initScrollExpand = () => {
+            const container = document.getElementById('hero-scroll');
+            const frame = document.getElementById('hero-frame');
+            const media = document.getElementById('hero-media');
+            const content = document.getElementById('hero-content');
+            
+            if (!container || !frame || !media) return;
+
+            // Configuration
+            const conf = {
+                startWidth: 42,   // %
+                startHeight: 58,  // %
+                startRadius: 24,  // px
+                endRadius: 0,
+                mediaZoom: 1.35
+            };
+
+            let currentProgress = 0;
+            let targetProgress = 0;
+            let running = false;
+
+            const applyProgress = (p) => {
+                // Use smoothstep for visual easing
+                const e = smoothstep(0, 1, p);
+                
+                // Calculate dimensions
+                const w = conf.startWidth + (100 - conf.startWidth) * e;
+                const h = conf.startHeight + (100 - conf.startHeight) * e;
+                const ix = Math.max(0, (100 - w) / 2);
+                const iy = Math.max(0, (100 - h) / 2);
+                const r = conf.startRadius + (conf.endRadius - conf.startRadius) * e;
+                
+                // Apply Frame Clip
+                frame.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
+                
+                // Apply Media Zoom
+                const currentScale = conf.mediaZoom + (1 - conf.mediaZoom) * e;
+                media.style.transform = `scale(${currentScale})`;
+
+                // Apply Content Fade Out
+                if (content) {
+                    const out = smoothstep(0.1, 0.7, p);
+                    content.style.opacity = 1 - out;
+                    content.style.transform = `translate3d(0, ${-40 * out}px, 0) scale(${1 + 0.05 * out})`;
+                }
+            };
+
+            const tick = () => {
+                // Smoothing factor
+                currentProgress += (targetProgress - currentProgress) * 0.1;
+                
+                if (Math.abs(targetProgress - currentProgress) < 0.001) {
+                    currentProgress = targetProgress;
+                    running = false;
+                }
+                
+                applyProgress(currentProgress);
+                
+                if (running) {
+                    requestAnimationFrame(tick);
+                }
+            };
+
+            const onScroll = () => {
+                // Calculate progress based on container scroll bounds
+                const rect = container.getBoundingClientRect();
+                const windowH = window.innerHeight;
+                
+                // We want progress 0 when container top is at window top
+                // Progress 1 when container bottom is at window bottom
+                const maxScroll = rect.height - windowH;
+                const scrollY = -rect.top;
+                
+                targetProgress = clamp(scrollY / maxScroll, 0, 1);
+                
+                if (!running) {
+                    running = true;
+                    requestAnimationFrame(tick);
+                }
+            };
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            
+            // Initial call
+            onScroll();
+        };
+
+        // ==========================================
+        // 3. AccordionGallery Logic (GSAP) & Modal
+        // ==========================================
+        const initAccordionGallery = (rowId, defaultActiveIndex) => {
+            const row = document.getElementById(rowId);
+            if (!row) return;
+
+            const panels = Array.from(row.querySelectorAll('.ag-panel'));
+            if (!panels.length) return;
+
+            let activeIndex = defaultActiveIndex;
+            const expandRatio = 0.52; // roughly 52% for active panel
+            const tilt = 8; // degrees
+            const duration = 0.6;
+            const ease = "power3.out";
+            
+            // Pre-calculate flex-grow math
+            const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
+            const grow = panels.length > 1 ? (r * (panels.length - 1)) / (1 - r) : 1;
+
+            const updateLayout = (animate = true) => {
+                if (!window.gsap) return; // Fail safe if GSAP isn't loaded
+                
+                const tl = gsap.timeline();
+                const dur = animate ? duration : 0;
+                
+                panels.forEach((panel, i) => {
+                    const isActive = i === activeIndex;
+                    const mediaWrap = panel.querySelector('.ag-panel-media-wrap');
+                    const bar = panel.querySelector('.ag-panel-bar');
+                    const text = panel.querySelector('.ag-panel-text');
+                    const overlay = panel.querySelector('.ag-panel-overlay');
+
+                    // 3D rotation based on position relative to active
+                    const rotY = isActive ? 0 : i < activeIndex ? tilt : -tilt;
+
+                    // Panel container animation
+                    tl.to(panel, {
+                        flexGrow: isActive ? grow : 1,
+                        rotateY: rotY,
+                        duration: dur,
+                        ease: ease
+                    }, 0);
+
+                    // Image Shift & Grayscale animation
+                    if (mediaWrap) {
+                        const drift = Math.max(-1.5, Math.min(1.5, activeIndex - i));
+                        const shiftX = drift * 320 * 0.05 * 0.5; // Parallax
+                        const gray = isActive ? 0 : 1;
+                        
+                        tl.to(mediaWrap, {
+                            xPercent: -50,
+                            yPercent: -50,
+                            x: isActive ? 0 : shiftX,
+                            filter: `grayscale(${gray})`,
+                            duration: dur,
+                            ease: ease
+                        }, 0);
+                    }
+
+                    // Overlay Dimming
+                    if (overlay) {
+                        tl.to(overlay, {
+                            opacity: isActive ? 0 : 0.6,
+                            duration: dur,
+                            ease: ease
+                        }, 0);
+                    }
+
+                    // Labels Animation
+                    if (bar && text) {
+                        if (isActive) {
+                            tl.to([bar, text], {
+                                opacity: 1,
+                                x: 0,
+                                duration: dur,
+                                ease: ease,
+                                stagger: 0.06 // Text slightly after bar
+                            }, 0);
+                        } else {
+                            tl.to([bar, text], {
+                                opacity: 0,
+                                x: -14,
+                                duration: dur * 0.6,
+                                ease: ease
+                            }, 0);
+                        }
+                    }
+                });
+            };
+
+            // Event Listeners for Hover and Focus
+            panels.forEach((panel, i) => {
+                panel.addEventListener('mouseenter', () => {
+                    if (activeIndex !== i) {
+                        activeIndex = i;
+                        updateLayout(true);
+                    }
+                });
+                
+                panel.setAttribute('tabindex', '0');
+                panel.addEventListener('focus', () => {
+                    activeIndex = i;
+                    updateLayout(true);
+                });
+
+                // CLICK LISTENER TO OPEN MODAL
+                panel.addEventListener('click', () => {
+                    const name = panel.getAttribute('data-name');
+                    const imgUrl = panel.getAttribute('data-img');
+                    const desc = panel.getAttribute('data-desc');
+                    openModal(name, imgUrl, desc);
+                });
+                
+                // Keyboard Enter/Space to open modal
+                panel.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const name = panel.getAttribute('data-name');
+                        const imgUrl = panel.getAttribute('data-img');
+                        const desc = panel.getAttribute('data-desc');
+                        openModal(name, imgUrl, desc);
+                    }
+                });
+            });
+
+            // Initial Layout (no animation)
+            updateLayout(false);
+        };
+
+        // ==========================================
+        // 4. Modal / Lightbox Logic
+        // ==========================================
+        const modal = document.getElementById('team-modal');
+        const modalName = document.getElementById('modal-name');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalImg = document.getElementById('modal-image');
+        const closeBtn = document.getElementById('close-modal-btn');
+        const backdrop = document.getElementById('team-modal-backdrop');
+
+        const openModal = (name, imgUrl, desc) => {
+            // Populate Data
+            modalName.textContent = name || 'Team Member';
+            modalDesc.textContent = desc || 'Description unavailable.';
+            
+            // Handle Image Loading
+            modalImg.style.opacity = '0'; // Hide until loaded
+            modalImg.src = imgUrl;
+            modalImg.onload = () => {
+                modalImg.style.opacity = '1';
+            };
+
+            // Show Modal (triggers CSS transitions)
+            modal.classList.add('modal-active');
+            
+            // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModal = () => {
+            // Hide Modal (triggers CSS transitions)
+            modal.classList.remove('modal-active');
+            
+            // Restore background scrolling
+            document.body.style.overflow = '';
+            
+            // Clear image after animation to prevent ghosting on next open
+            setTimeout(() => {
+                if(!modal.classList.contains('modal-active')) {
+                    modalImg.src = '';
+                }
+            }, 400); 
+        };
+
+        // Modal Event Listeners
+        closeBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('modal-active')) {
+                closeModal();
+            }
+        });
+
+
+        // ==========================================
+        // Initialization on DOM Content Loaded
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initShapeGrid();
+            initScrollExpand();
+            
+            // GSAP needs to be fully parsed.
+            const initGSAPComponents = () => {
+                if (window.gsap) {
+                    initAccordionGallery('team-row-1', 2); // Center active for 5 items
+                    initAccordionGallery('team-row-2', 1); // Center-left active for 4 items
+                } else {
+                    setTimeout(initGSAPComponents, 50);
+                }
+            };
+            initGSAPComponents();
+        });
+
+    </script>
+</body>
+</html>
