@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,12 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         dark: '#050505',
+                        lightBg: '#f8fafc',
                         accent: '#3b82f6',
                         accentDark: '#1d4ed8'
                     },
@@ -32,6 +34,12 @@
             color: #ffffff;
             overflow-x: hidden;
             margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html:not(.dark) body {
+            background-color: #f8fafc;
+            color: #0f172a;
         }
 
         #shapegrid-canvas {
@@ -180,7 +188,7 @@
         .nav-link.active { color: #3b82f6; font-weight: 600; }
         
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-track { background: inherit; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
     </style>
 </head>
@@ -188,16 +196,29 @@
 
     <canvas id="shapegrid-canvas"></canvas>
 
-    <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-dark/70 border-b border-white/10 transition-all duration-300" id="navbar">
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-dark/70 dark:bg-dark/70 bg-white/70 border-b border-white/10 dark:border-white/10 border-gray-200 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold tracking-tighter text-white cursor-pointer" onclick="switchTab('home')">
+            <div class="text-xl font-bold tracking-tighter text-white dark:text-white text-gray-900 cursor-pointer" onclick="switchTab('home')">
                 STUDIO<span class="text-accent">X</span>
             </div>
-            <div class="hidden md:flex space-x-8">
-                <button onclick="switchTab('home')" class="nav-link active text-sm text-gray-300 hover:text-white transition-colors" data-target="home">Home</button>
-                <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 hover:text-white transition-colors" data-target="cad">CAD Project</button>
-                <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 hover:text-white transition-colors" data-target="days">Our Days</button>
-                <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-300 hover:text-white transition-colors" data-target="materials">Materials</button>
+            <div class="hidden md:flex items-center space-x-8">
+                <button onclick="switchTab('home')" class="nav-link active text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="home">Home</button>
+                <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="cad">CAD Project</button>
+                <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="materials">Materials</button>
+                <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="days">Our Days</button>
+                
+                
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="p-2 rounded-full bg-white/10 dark:bg-white/10 bg-gray-200 text-gray-200 dark:text-gray-200 text-gray-700 hover:bg-white/20 dark:hover:bg-white/20 hover:bg-gray-300 transition-colors focus:outline-none" aria-label="Toggle Theme">
+                    <!-- Sun Icon (Shown in Dark Mode) -->
+                    <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <!-- Moon Icon (Shown in Light Mode) -->
+                    <svg id="theme-icon-moon" class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
@@ -210,8 +231,8 @@
             <section class="se-container" id="hero-scroll-container">
                 <div class="se-sticky">
                     <div class="absolute z-10 text-center pointer-events-none drop-shadow-2xl">
-                        <h1 class="text-6xl md:text-8xl font-black text-white tracking-tighter mix-blend-overlay">INNOVATE</h1>
-                        <p class="text-xl md:text-2xl text-gray-200 mt-4 mix-blend-overlay font-light">Scroll to explore</p>
+                        <h1 class="text-6xl md:text-8xl font-black text-white dark:text-white text-gray-900 tracking-tighter mix-blend-overlay">INNOVATE</h1>
+                        <p class="text-xl md:text-2xl text-gray-200 dark:text-gray-200 text-gray-700 mt-4 mix-blend-overlay font-light">Scroll to explore</p>
                     </div>
                     <div class="se-frame" id="hero-frame">
                         <img src="https://picsum.photos/id/1050/1920/1080?grayscale" class="se-image" id="hero-image" alt="Hero">
@@ -223,8 +244,8 @@
             <!-- Accordion Gallery (Team) -->
             <section class="max-w-7xl mx-auto px-6 py-32">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Meet the Team</h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">The brilliant minds behind the engineering.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Meet the Team</h2>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">The brilliant minds behind the engineering.</p>
                 </div>
 
                 <div class="accordion-wrapper" id="team-accordion">
@@ -309,35 +330,35 @@
                         <div class="inline-block px-3 py-1 rounded-full bg-accent/20 border border-accent/30 text-accent text-xs font-semibold tracking-wide uppercase">
                             In Development
                         </div>
-                        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
+                        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
                             Next-Gen <br>
                             <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-500">
                                 Aerospace CAD
                             </span>
                         </h1>
-                        <p class="text-lg text-gray-400 max-w-lg leading-relaxed">
+                        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
                             Placeholder for detailed project description. This section will outline the structural engineering, aerodynamic efficiency, and core philosophy behind the upcoming 3D model once finalized.
                         </p>
-                        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-white/10">
+                        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-white/10">
                             <div>
                                 <h4 class="text-gray-500 text-sm uppercase tracking-wider mb-1">Status</h4>
-                                <p class="font-semibold text-white">Modeling Phase</p>
+                                <p class="font-semibold text-gray-900 dark:text-white">Modeling Phase</p>
                             </div>
                             <div>
                                 <h4 class="text-gray-500 text-sm uppercase tracking-wider mb-1">Target Release</h4>
-                                <p class="font-semibold text-white">Q4 2026</p>
+                                <p class="font-semibold text-gray-900 dark:text-white">Q4 2026</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gradient-to-br from-gray-900 to-black rounded-3xl border border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
+                    <div class="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black rounded-3xl border border-gray-200 dark:border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
                         <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
                         <div class="text-center z-10 transition-transform duration-500 group-hover:scale-110">
-                            <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
                             </svg>
-                            <h3 class="text-2xl font-bold text-gray-500 tracking-widest uppercase">3D Viewer</h3>
-                            <p class="text-sm text-gray-600 mt-2">Space reserved for WebGL Canvas</p>
+                            <h3 class="text-2xl font-bold text-gray-400 dark:text-gray-500 tracking-widest uppercase">3D Viewer</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-600 mt-2">Space reserved for WebGL Canvas</p>
                         </div>
                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/20 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover:opacity-80 transition-opacity duration-700"></div>
                     </div>
@@ -349,8 +370,8 @@
         <div id="page-days" class="page-section pt-32 pb-24">
             <section class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Our Days</h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">Documenting the journey. A collection of behind-the-scenes progress, sketches, and daily milestones.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Our Days</h2>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Documenting the journey. A collection of behind-the-scenes progress, sketches, and daily milestones.</p>
                 </div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -397,8 +418,8 @@
         <div id="page-materials" class="page-section pt-32 pb-24 min-h-screen">
             <section class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Materials</h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design. Built with custom GSAP Masonry grid.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Materials</h2>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design. Built with custom GSAP Masonry grid.</p>
                 </div>
                 
                 <div id="masonry-container" class="masonry-list w-full relative">
@@ -430,6 +451,27 @@
     </div>
 
     <script>
+        // --- Theme Toggle Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Check local storage on load
+        if (localStorage.getItem('theme') === 'light') {
+            htmlElement.classList.remove('dark');
+        } else {
+            htmlElement.classList.add('dark');
+        }
+
         // --- 1. SPA Navigation Logic ---
         function switchTab(tabId) {
             // Update nav links
@@ -502,8 +544,9 @@
                     trails.set(cellKey, 1.0); // Full opacity on hover
                 }
 
-                // Draw Base Grid
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                // Draw Base Grid (Adapts slightly to theme)
+                const isDark = document.documentElement.classList.contains('dark');
+                ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.04)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 for (let x = -size + (offset % size); x < width + size; x += size) {
@@ -753,8 +796,7 @@
                         });
                     });
 
-                    // Animate In (only trigger when materials tab is actually shown)
-                    // We will use IntersectionObserver or just rely on the tab switch logic
+                    // Animate In
                     gsap.to(wrapper, {
                         x: item.x,
                         y: item.y,
