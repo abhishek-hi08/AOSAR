@@ -419,7 +419,7 @@
             <section class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Materials</h2>
-                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design. Built with custom GSAP Masonry grid.</p>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design. Built with custom GSAP Grid.</p>
                 </div>
                 
                 <div id="masonry-container" class="masonry-list w-full relative">
@@ -678,15 +678,27 @@
             });
         }
 
-        // --- 5. Masonry Grid (Materials) ---
+        // --- 5. Uniform Grid (Materials) ---
+        // Changed heights to a uniform 350 to perfectly align the boxes using your existing GSAP script 
+        // and added 10 additional items to total 17 boxes.
         const materialsData = [
-            { id: "m1", img: "https://picsum.photos/id/1015/600/900?grayscale", height: 450, name: "Carbon Fiber Weave", role: "Structural Primary", desc: "Ultra-lightweight polymer matrix composite utilized for primary structural components requiring high tensile strength." },
-            { id: "m2", img: "https://picsum.photos/id/1018/600/750?grayscale", height: 375, name: "Titanium Alloy Ti-6Al-4V", role: "Heat Resistance", desc: "Aerospace grade titanium known for its high strength-to-weight ratio and excellent corrosion resistance at extreme temperatures." },
-            { id: "m3", img: "https://picsum.photos/id/1020/600/800?grayscale", height: 500, name: "Reinforced Kevlar", role: "Impact Shielding", desc: "Synthetic aramid fiber providing exceptional impact resistance and ballistic shielding for internal sensitive modules." },
-            { id: "m4", img: "https://picsum.photos/id/1024/600/600?grayscale", height: 300, name: "Thermal Glass", role: "Viewports", desc: "Multi-layered fused silica window assemblies designed to withstand rapid thermal shock and extreme pressure differentials." },
-            { id: "m5", img: "https://picsum.photos/id/1032/600/950?grayscale", height: 475, name: "Aluminum Honeycomb", role: "Core Panels", desc: "Core material used in sandwich structural panels to maximize stiffness while minimizing overall vehicle mass." },
-            { id: "m6", img: "https://picsum.photos/id/1043/600/700?grayscale", height: 350, name: "Ceramic Matrix Composite", role: "Leading Edges", desc: "Heat-resistant coating applied to leading edges to survive atmospheric entry frictional temperatures." },
-            { id: "m7", img: "https://picsum.photos/id/1053/600/850?grayscale", height: 425, name: "Aerogel Insulation", role: "Thermal Control", desc: "Synthetic porous ultralight material used to protect sensitive electronics from extreme cold in high altitudes." }
+            { id: "m1", img: "https://picsum.photos/id/1015/600/600?grayscale", height: 350, name: "Carbon Fiber Weave", role: "Structural Primary", desc: "Ultra-lightweight polymer matrix composite utilized for primary structural components requiring high tensile strength." },
+            { id: "m2", img: "https://picsum.photos/id/1018/600/600?grayscale", height: 350, name: "Titanium Alloy Ti-6Al-4V", role: "Heat Resistance", desc: "Aerospace grade titanium known for its high strength-to-weight ratio and excellent corrosion resistance at extreme temperatures." },
+            { id: "m3", img: "https://picsum.photos/id/1020/600/600?grayscale", height: 350, name: "Reinforced Kevlar", role: "Impact Shielding", desc: "Synthetic aramid fiber providing exceptional impact resistance and ballistic shielding for internal sensitive modules." },
+            { id: "m4", img: "https://picsum.photos/id/1024/600/600?grayscale", height: 350, name: "Thermal Glass", role: "Viewports", desc: "Multi-layered fused silica window assemblies designed to withstand rapid thermal shock and extreme pressure differentials." },
+            { id: "m5", img: "https://picsum.photos/id/1032/600/600?grayscale", height: 350, name: "Aluminum Honeycomb", role: "Core Panels", desc: "Core material used in sandwich structural panels to maximize stiffness while minimizing overall vehicle mass." },
+            { id: "m6", img: "https://picsum.photos/id/1043/600/600?grayscale", height: 350, name: "Ceramic Matrix Composite", role: "Leading Edges", desc: "Heat-resistant coating applied to leading edges to survive atmospheric entry frictional temperatures." },
+            { id: "m7", img: "https://picsum.photos/id/1053/600/600?grayscale", height: 350, name: "Aerogel Insulation", role: "Thermal Control", desc: "Synthetic porous ultralight material used to protect sensitive electronics from extreme cold in high altitudes." },
+            { id: "m8", img: "https://picsum.photos/id/1054/600/600?grayscale", height: 350, name: "Lithium-Ion Cells", role: "Power Systems", desc: "High-density energy storage arrays optimized for sustained performance in vacuum environments." },
+            { id: "m9", img: "https://picsum.photos/id/1055/600/600?grayscale", height: 350, name: "PTFE Tubing", role: "Fluid Transport", desc: "Chemically inert polytetrafluoroethylene used for highly corrosive propulsion fluid lines." },
+            { id: "m10", img: "https://picsum.photos/id/1056/600/600?grayscale", height: 350, name: "Beryllium Copper", role: "EM Shielding", desc: "Non-sparking, non-magnetic alloy used for critical electronic enclosures." },
+            { id: "m11", img: "https://picsum.photos/id/1057/600/600?grayscale", height: 350, name: "Graphene Aerogel", role: "Advanced Thermal", desc: "State-of-the-art super-insulator providing near-zero thermal conductivity." },
+            { id: "m12", img: "https://picsum.photos/id/1058/600/600?grayscale", height: 350, name: "Tungsten Alloy", role: "Ballasts", desc: "High-density material used for precision weight distribution and kinetic dampening." },
+            { id: "m13", img: "https://picsum.photos/id/1059/600/600?grayscale", height: 350, name: "Polycarbonate", role: "Secondary Viewports", desc: "Shatter-resistant transparent thermoplastic for internal cabin divisions." },
+            { id: "m14", img: "https://picsum.photos/id/1060/600/600?grayscale", height: 350, name: "Inconel 718", role: "Exhaust Nozzles", desc: "Superalloy capable of maintaining structural integrity under extreme thrust temperatures." },
+            { id: "m15", img: "https://picsum.photos/id/1061/600/600?grayscale", height: 350, name: "Silicon Carbide", role: "High-Temp Sensors", desc: "Semiconductor material used for diagnostic sensors operating in intense heat environments." },
+            { id: "m16", img: "https://picsum.photos/id/1062/600/600?grayscale", height: 350, name: "Boron Nitride", role: "Radiation Shielding", desc: "Nanotube structure offering exceptional protection against cosmic radiation." },
+            { id: "m17", img: "https://picsum.photos/id/1063/600/600?grayscale", height: 350, name: "Shape Memory Alloy", role: "Deployable Structures", desc: "Nickel-titanium alloy that returns to a pre-set shape when exposed to specific temperatures." }
         ];
 
         class MasonryGallery {
