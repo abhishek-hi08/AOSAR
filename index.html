@@ -7,6 +7,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -21,12 +22,13 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -182,6 +184,61 @@
             opacity: 1;
         }
 
+        /* CAD 3D VIEWER LABELS & CONTROLS */
+        .cad-dim, .cad-tag {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            font: 500 11px 'IBM Plex Mono', monospace;
+            padding: 2px 6px;
+            background: rgba(15, 23, 42, 0.88);
+            color: #60a5fa;
+            border: 1px solid #3b82f6;
+            border-radius: 4px;
+            white-space: nowrap;
+            backdrop-filter: blur(4px);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        html:not(.dark) .cad-dim, html:not(.dark) .cad-tag {
+            background: rgba(255, 255, 255, 0.92);
+            color: #1d4ed8;
+            border-color: #2563eb;
+        }
+        .cad-tag.red {
+            color: #f87171;
+            border-color: #ef4444;
+        }
+        html:not(.dark) .cad-tag.red {
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+        .cad-tag.blue {
+            color: #60a5fa;
+            border-color: #3b82f6;
+        }
+        html:not(.dark) .cad-tag.blue {
+            color: #2563eb;
+            border-color: #2563eb;
+        }
+        .cad-tag.on {
+            font-weight: 600;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25), 0 0 12px currentColor;
+        }
+        .cad-btn[aria-pressed="true"] {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+            border-color: #3b82f6 !important;
+        }
+        #mRed[aria-pressed="true"] {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+            border-color: #ef4444 !important;
+        }
+        #mBlue[aria-pressed="true"] {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border-color: #2563eb !important;
+        }
+
         /* UTILS */
         .page-section { display: none; opacity: 0; transition: opacity 0.4s ease; }
         .page-section.active { display: block; opacity: 1; }
@@ -206,7 +263,6 @@
                 <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="cad">CAD Project</button>
                 <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="materials">Materials</button>
                 <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="days">Our Days</button>
-                
                 
                 <!-- Theme Toggle Button -->
                 <button id="theme-toggle" class="p-2 rounded-full bg-white/10 dark:bg-white/10 bg-gray-200 text-gray-200 dark:text-gray-200 text-gray-700 hover:bg-white/20 dark:hover:bg-white/20 hover:bg-gray-300 transition-colors focus:outline-none" aria-label="Toggle Theme">
@@ -322,46 +378,218 @@
             </section>
         </div>
 
-        <!-- PAGE 2: CAD PROJECT -->
-        <div id="page-cad" class="page-section pt-24 pb-12">
-            <section class="min-h-[80vh] flex items-center max-w-7xl mx-auto px-6 py-10 relative">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-                    <div class="space-y-8 z-10">
-                        <div class="inline-block px-3 py-1 rounded-full bg-accent/20 border border-accent/30 text-accent text-xs font-semibold tracking-wide uppercase">
-                            In Development
+        <!-- PAGE 2: CAD PROJECT (Tri-Tier Robot WebGL & Telemetry) -->
+        <div id="page-cad" class="page-section pt-24 pb-20">
+            <section class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+                
+                <!-- Hero Grid: Project Info + Interactive 3D WebGL Viewer -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Left Column: Details & Controls -->
+                    <div class="lg:col-span-5 space-y-6 z-10">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/15 border border-accent/30 text-accent text-xs font-semibold tracking-wide uppercase">
+                            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                            Interactive WebGL CAD
                         </div>
-                        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-gray-900 dark:text-white">
-                            Next-Gen <br>
+
+                        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white">
+                            Tri-Tier <br>
                             <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent to-purple-500">
-                                Aerospace CAD
+                                Scanner Robot
                             </span>
                         </h1>
-                        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed">
-                            Placeholder for detailed project description. This section will outline the structural engineering, aerodynamic efficiency, and core philosophy behind the upcoming 3D model once finalized.
+
+                        <p class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                            A two-tier triangular scanner robot on three omnidirectional kiwi-drive wheels. It reads a hanging scroll's colour via its mast camera, computes its own heading, and autonomously locks at <strong>400 mm</strong> from a red scroll or <strong>600 mm</strong> from a blue one.
                         </p>
-                        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-white/10">
+
+                        <!-- Interactive Control Bar -->
+                        <div class="p-5 rounded-2xl bg-gray-100/90 dark:bg-white/[0.04] border border-gray-200 dark:border-white/10 space-y-4 backdrop-blur-md">
+                            
+                            <!-- Mission Simulation Triggers -->
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-gray-400 w-16">Mission</span>
+                                <button id="mRed" aria-pressed="false" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border-2 border-red-500/80 text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-all">
+                                    Red Scroll · 400 mm
+                                </button>
+                                <button id="mBlue" aria-pressed="false" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border-2 border-blue-500/80 text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition-all">
+                                    Blue Scroll · 600 mm
+                                </button>
+                            </div>
+
+                            <!-- Explode & Dimension Toggles -->
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-gray-400 w-16">Inspect</span>
+                                <button id="bExplode" aria-pressed="false" class="cad-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white dark:bg-white/10 border border-gray-300 dark:border-white/15 text-gray-800 dark:text-gray-200 hover:border-accent transition-all">
+                                    Exploded (Split Parts)
+                                </button>
+                                <button id="bDims" aria-pressed="true" class="cad-btn px-3.5 py-1.5 rounded-lg text-xs font-medium bg-white dark:bg-white/10 border border-gray-300 dark:border-white/15 text-gray-800 dark:text-gray-200 hover:border-accent transition-all">
+                                    Dimensions
+                                </button>
+                            </div>
+
+                            <!-- Camera Presets -->
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="text-xs font-mono uppercase tracking-wider text-gray-500 dark:text-gray-400 w-16">Camera</span>
+                                <button id="vIso" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">Iso</button>
+                                <button id="vTop" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">Top</button>
+                                <button id="vRear" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">Rear</button>
+                                <button id="vSide" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">Side</button>
+                                <button id="zIn" aria-label="Zoom in" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">+</button>
+                                <button id="zOut" aria-label="Zoom out" class="px-2.5 py-1 rounded-md text-xs font-mono bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all">&minus;</button>
+                            </div>
+                        </div>
+
+                        <!-- Quick Metadata Footnote -->
+                        <div class="grid grid-cols-2 gap-6 pt-2 border-t border-gray-200 dark:border-white/10">
                             <div>
-                                <h4 class="text-gray-500 text-sm uppercase tracking-wider mb-1">Status</h4>
-                                <p class="font-semibold text-gray-900 dark:text-white">Modeling Phase</p>
+                                <h4 class="text-gray-500 text-xs font-mono uppercase tracking-wider mb-1">Footprint &amp; Height</h4>
+                                <p class="font-semibold text-gray-900 dark:text-white">684 &times; 600 mm &middot; 589 mm Tall</p>
                             </div>
                             <div>
-                                <h4 class="text-gray-500 text-sm uppercase tracking-wider mb-1">Target Release</h4>
-                                <p class="font-semibold text-gray-900 dark:text-white">Q4 2026</p>
+                                <h4 class="text-gray-500 text-xs font-mono uppercase tracking-wider mb-1">Interaction</h4>
+                                <p class="font-semibold text-accent">Click 3D Model to Split</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-black rounded-3xl border border-gray-200 dark:border-white/5 overflow-hidden flex items-center justify-center group shadow-2xl">
-                        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-                        <div class="text-center z-10 transition-transform duration-500 group-hover:scale-110">
-                            <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-                            </svg>
-                            <h3 class="text-2xl font-bold text-gray-400 dark:text-gray-500 tracking-widest uppercase">3D Viewer</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-600 mt-2">Space reserved for WebGL Canvas</p>
+                    <!-- Right Column: 3D WebGL Stage -->
+                    <div class="lg:col-span-7">
+                        <div id="cad-stage" class="relative w-full h-[500px] md:h-[600px] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#0c1015] dark:to-[#07090c] rounded-3xl border border-gray-300 dark:border-white/10 overflow-hidden shadow-2xl group">
+                            
+                            <!-- Three.js Canvas -->
+                            <canvas id="cad-cv" tabindex="0" class="block w-full h-full cursor-grab active:cursor-grabbing focus:outline-none" aria-label="3D arena with the Tri-Tier robot and hanging scroll. Click model to split into parts, drag to orbit, scroll to zoom."></canvas>
+                            
+                            <!-- Dynamic 3D Projected Labels Container -->
+                            <div id="cad-labels" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+                            
+                            <!-- Top-Right Readout Badge -->
+                            <div class="absolute right-4 top-4 font-mono text-[11px] px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-md border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 pointer-events-none">
+                                589 mm tall &middot; 684 &times; 600 mm footprint
+                            </div>
+                            
+                            <!-- Bottom-Left Interaction Hint -->
+                            <div class="absolute left-4 bottom-4 font-mono text-[11px] px-3 py-1.5 rounded-full bg-white/80 dark:bg-black/60 backdrop-blur-md border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 pointer-events-none">
+                                Click model to split parts &middot; Drag to orbit &middot; Scroll to zoom
+                            </div>
                         </div>
-                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/20 blur-[100px] rounded-full pointer-events-none opacity-50 group-hover:opacity-80 transition-opacity duration-700"></div>
                     </div>
+                </div>
+
+                <!-- Live Telemetry Strip -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 rounded-2xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.03] backdrop-blur-md overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-gray-200 dark:divide-white/10 shadow-lg">
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Scroll Colour</small>
+                        <b id="tColor" class="block font-mono text-base mt-1 text-gray-900 dark:text-white">&mdash;</b>
+                    </div>
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Stand-Off Target</small>
+                        <b id="tTarget" class="block font-mono text-base mt-1 text-gray-900 dark:text-white">&mdash;</b>
+                    </div>
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Front Distance</small>
+                        <b id="tDist" class="block font-mono text-base mt-1 text-gray-900 dark:text-white">&mdash;</b>
+                    </div>
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Heading Error</small>
+                        <b id="tYaw" class="block font-mono text-base mt-1 text-gray-900 dark:text-white">&mdash;</b>
+                    </div>
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Lateral Offset</small>
+                        <b id="tLat" class="block font-mono text-base mt-1 text-gray-900 dark:text-white">&mdash;</b>
+                    </div>
+                    <div class="p-4">
+                        <small class="block font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400">System State</small>
+                        <b id="tState" class="block text-sm font-semibold mt-1 text-accent">Choose a scroll to start</b>
+                    </div>
+                </div>
+
+                <!-- 3-Column Technical Specifications & Mission Breakdown -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+                    
+                    <!-- Card 1: Mission Steps -->
+                    <div class="p-6 rounded-2xl bg-white/70 dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 border-t-2 border-t-accent space-y-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Mission Sequence</h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Each run starts from a randomized position and heading.</p>
+                        </div>
+                        <ol class="list-decimal list-inside space-y-2.5 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <li>Camera reads the scroll colour and picks the stand-off: <strong>red 400 mm</strong>, <strong>blue 600 mm</strong>.</li>
+                            <li>IMU and front ultrasonic distance sensor compute heading relative to the scroll face.</li>
+                            <li>The robot rotates in place until it squarely faces the target scroll.</li>
+                            <li>Omni wheels allow simultaneous lateral and forward translation to close on the target.</li>
+                            <li>Fine micro-corrections hold position and heading steady before signalling ready.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Card 2: From Your Drawing -->
+                    <div class="p-6 rounded-2xl bg-white/70 dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 border-t-2 border-t-accent space-y-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Measured CAD Geometry</h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Primary dimensions extracted directly from the blueprint.</p>
+                        </div>
+                        <dl class="divide-y divide-gray-200 dark:divide-white/10 text-sm">
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Lower tier edges</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">600.0 / 684.0 mm</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Upper tier edge</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">636.6 mm</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Plate thickness</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">17.0 mm</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Tier gap (posts)</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">200.0 mm</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Top mast post</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">200.0 mm</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Frame tube width</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">26.0 mm</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <!-- Card 3: Hardware & Subsystems -->
+                    <div class="p-6 rounded-2xl bg-white/70 dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 border-t-2 border-t-accent space-y-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Integrated Subsystems</h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Drivetrain, power, and onboard sensing hardware.</p>
+                        </div>
+                        <dl class="divide-y divide-gray-200 dark:divide-white/10 text-sm">
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Wheels</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">3 &times; &Oslash;100 mm omni (120&deg;)</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Drive</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">3 Geared DC Motors</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Colour sensing</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">Corner Mast Camera</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Distance sensing</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">Dual Front Ultrasonic</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Heading</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">Upper-Tier IMU</dd>
+                            </div>
+                            <div class="py-2.5 flex justify-between">
+                                <dt class="text-gray-600 dark:text-gray-400">Overall height</dt>
+                                <dd class="font-mono font-medium text-gray-900 dark:text-white">589 mm</dd>
+                            </div>
+                        </dl>
+                    </div>
+
                 </div>
             </section>
         </div>
@@ -463,6 +691,7 @@
                 htmlElement.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
             }
+            if (window.updateCadTheme) window.updateCadTheme();
         });
 
         // Check local storage on load
@@ -498,6 +727,10 @@
                 // Refresh Masonry layout if switching to materials tab
                 if(tabId === 'materials' && window.masonryInstance) {
                     window.masonryInstance.handleResize();
+                }
+                // Refresh 3D CAD canvas size when switching to CAD tab
+                if(tabId === 'cad' && window.resizeCadViewer) {
+                    window.resizeCadViewer();
                 }
             }, 50);
         }
@@ -585,8 +818,6 @@
                 // Only process if Home is active
                 if(!document.getElementById('page-home').classList.contains('active')) return;
 
-                const rect = container.getBoundingClientRect();
-                // Scroll progress relative to container (0 to 1)
                 const scrollY = window.scrollY;
                 const maxScroll = container.offsetHeight - window.innerHeight;
                 let progress = Math.max(0, Math.min(1, scrollY / maxScroll));
@@ -595,11 +826,8 @@
                 const easeProgress = progress * progress * (3 - 2 * progress);
 
                 // Calculate mapped values
-                // Inset: 20% -> 0%
                 const inset = 20 - (easeProgress * 20);
-                // Border Radius: 30px -> 0px
                 const radius = 30 - (easeProgress * 30);
-                // Image Scale: 1.2 -> 1.0
                 const scale = 1.2 - (easeProgress * 0.2);
 
                 frame.style.setProperty('--clip-inset', `${inset}%`);
@@ -679,8 +907,6 @@
         }
 
         // --- 5. Uniform Grid (Materials) ---
-        // Changed heights to a uniform 350 to perfectly align the boxes using your existing GSAP script 
-        // and added 10 additional items to total 17 boxes.
         const materialsData = [
             { id: "m1", img: "https://picsum.photos/id/1015/600/600?grayscale", height: 350, name: "Carbon Fiber Weave", role: "Structural Primary", desc: "Ultra-lightweight polymer matrix composite utilized for primary structural components requiring high tensile strength." },
             { id: "m2", img: "https://picsum.photos/id/1018/600/600?grayscale", height: 350, name: "Titanium Alloy Ti-6Al-4V", role: "Heat Resistance", desc: "Aerospace grade titanium known for its high strength-to-weight ratio and excellent corrosion resistance at extreme temperatures." },
@@ -883,11 +1109,693 @@
             if(e.key === 'Escape' && modal.classList.contains('opacity-100')) closeModal();
         });
 
+        // --- 7. 3D CAD Viewer (Tri-Tier Robot WebGL) ---
+        function initCadProject() {
+            var S = 0.001;
+            var stage = document.getElementById('cad-stage');
+            var cv = document.getElementById('cad-cv');
+            var labelsEl = document.getElementById('cad-labels');
+            if (!stage || !cv) return;
+
+            var renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(38, 1, 0.05, 60);
+
+            /* Lights */
+            scene.add(new THREE.HemisphereLight(0xffffff, 0x7a8794, 0.85));
+            var sun = new THREE.DirectionalLight(0xffffff, 1.0);
+            sun.position.set(1.6, 3, 2.2);
+            sun.castShadow = true;
+            sun.shadow.mapSize.set(2048, 2048);
+            var sc = sun.shadow.camera;
+            sc.left = -2; sc.right = 2; sc.top = 2; sc.bottom = -2; sc.near = 0.5; sc.far = 9;
+            sun.shadow.bias = -0.0005;
+            scene.add(sun);
+
+            var fill = new THREE.DirectionalLight(0xbfd0ff, 0.35);
+            fill.position.set(-2, 1.5, -2);
+            scene.add(fill);
+
+            /* Ground: shadow catcher + fading shader grid */
+            var ground = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShadowMaterial({ opacity: 0.28 }));
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+
+            var gridMat = new THREE.ShaderMaterial({
+                transparent: true,
+                depthWrite: false,
+                uniforms: { c: { value: new THREE.Color(0x5b6977) } },
+                vertexShader: 'varying vec3 w;void main(){vec4 p=modelMatrix*vec4(position,1.);w=p.xyz;gl_Position=projectionMatrix*viewMatrix*p;}',
+                fragmentShader: 'uniform vec3 c;varying vec3 w;void main(){float d=length(w.xz-vec2(0.,0.4));float a=smoothstep(2.6,0.7,d)*0.6;gl_FragColor=vec4(c,a);}'
+            });
+            var gp = [];
+            for (var gi = -30; gi <= 30; gi++) {
+                var gt = gi * 0.1;
+                gp.push(-3, 0, gt, 3, 0, gt, gt, 0, -3, gt, 0, 3);
+            }
+            var gg = new THREE.BufferGeometry();
+            gg.setAttribute('position', new THREE.Float32BufferAttribute(gp, 3));
+            var grid = new THREE.LineSegments(gg, gridMat);
+            grid.position.y = 0.0005;
+            scene.add(grid);
+
+            /* Materials */
+            function woodTex() {
+                var c = document.createElement('canvas');
+                c.width = c.height = 512;
+                var g = c.getContext('2d');
+                g.fillStyle = '#6a4838';
+                g.fillRect(0, 0, 512, 512);
+                for (var i = 0; i < 300; i++) {
+                    var y = Math.random() * 512;
+                    g.strokeStyle = 'rgba(' + (35 + Math.random() * 45 | 0) + ',' + (20 + Math.random() * 28 | 0) + ',' + (14 + Math.random() * 22 | 0) + ',' + (0.08 + Math.random() * 0.2) + ')';
+                    g.lineWidth = 1 + Math.random() * 3;
+                    g.beginPath();
+                    g.moveTo(0, y);
+                    for (var x = 0; x <= 512; x += 32) g.lineTo(x, y + Math.sin(x * 0.02 + i) * 4 + (Math.random() - 0.5) * 2);
+                    g.stroke();
+                }
+                var t = new THREE.CanvasTexture(c);
+                t.wrapS = t.wrapT = THREE.RepeatWrapping;
+                t.repeat.set(1.6, 1.6);
+                t.encoding = THREE.sRGBEncoding;
+                t.anisotropy = 4;
+                return t;
+            }
+            function M(color, r, m, extra) {
+                var o = { color: color, roughness: r, metalness: m || 0 };
+                if (extra) for (var k in extra) o[k] = extra[k];
+                return new THREE.MeshStandardMaterial(o);
+            }
+            var mWood = M(0xffffff, 0.62, 0, { map: woodTex() });
+            var mBlack = M(0x1d2024, 0.5, 0.45);
+            var mSteel = M(0xaab3bc, 0.35, 0.7);
+            var mRoll = M(0x2d3136, 0.6, 0.15);
+            var mPcb = M(0x0f6d42, 0.6, 0.1);
+            var mBatt = M(0x2c4a6e, 0.55, 0.1);
+            var mOrange = M(0xe27b20, 0.6, 0);
+            var mMotor = M(0x4b535b, 0.5, 0.5);
+            var mDark = M(0x2c3238, 0.55, 0.3);
+            var mLens = M(0x050607, 0.2, 0.3);
+            var mRed = M(0xc9302c, 0.5, 0);
+
+            /* Geometry Builders (mm in, metres out) */
+            function box(w, h, d, m, x, y, z, p) {
+                var o = new THREE.Mesh(new THREE.BoxGeometry(w * S, h * S, d * S), m);
+                o.position.set(x * S, y * S, z * S);
+                o.castShadow = true;
+                o.receiveShadow = true;
+                p.add(o);
+                return o;
+            }
+            function cyl(r, h, m, x, y, z, p, ax, seg) {
+                var g = new THREE.CylinderGeometry(r * S, r * S, h * S, seg || 36);
+                if (ax === 'x') g.rotateZ(Math.PI / 2);
+                if (ax === 'z') g.rotateX(Math.PI / 2);
+                var o = new THREE.Mesh(g, m);
+                o.position.set(x * S, y * S, z * S);
+                o.castShadow = true;
+                o.receiveShadow = true;
+                p.add(o);
+                return o;
+            }
+            function plate(pts, t, m) {
+                var sh = new THREE.Shape();
+                pts.forEach(function(p, i) {
+                    var x = p[0] * S, y = -p[1] * S;
+                    if (i) sh.lineTo(x, y); else sh.moveTo(x, y);
+                });
+                var g = new THREE.ExtrudeGeometry(sh, { depth: t * S, bevelEnabled: true, bevelSize: 0.0015, bevelThickness: 0.0015, bevelSegments: 2 });
+                g.rotateX(-Math.PI / 2);
+                var o = new THREE.Mesh(g, m);
+                o.castShadow = true;
+                o.receiveShadow = true;
+                return o;
+            }
+
+            /* Robot Geometry: base 600, sides 684, upper edge 636.6 */
+            var H = Math.sqrt(684 * 684 - 300 * 300);
+            var low = [[-300, -H / 3], [300, -H / 3], [0, 2 * H / 3]];
+            var kk = 636.6 / 684;
+            var up = low.map(function(v) { return [v[0] * kk, v[1] * kk]; });
+            var Y_LOW = 125, T = 17, Y_UP = 342;
+
+            var robot = new THREE.Group();
+            scene.add(robot);
+            var gBase = new THREE.Group(), gLow = new THREE.Group(), gPosts = new THREE.Group(), gUp = new THREE.Group();
+            robot.add(gBase, gLow, gPosts, gUp);
+
+            var pl = plate(low, T, mWood); pl.position.y = Y_LOW * S; gBase.add(pl);
+            var pu = plate(up, T, mWood); pu.position.y = Y_UP * S; gUp.add(pu);
+
+            /* Frame rails under lower plate */
+            for (var re = 0; re < 3; re++) {
+                var ra = low[re], rb = low[(re + 1) % 3];
+                var ax0 = ra[0] * 0.965, az0 = ra[1] * 0.965, bx0 = rb[0] * 0.965, bz0 = rb[1] * 0.965;
+                var RL = Math.hypot(bx0 - ax0, bz0 - az0);
+                var rail = box(RL + 26, 25, 26, mBlack, (ax0 + bx0) / 2, 112.5, (az0 + bz0) / 2, gBase);
+                rail.rotation.y = -Math.atan2(bz0 - az0, bx0 - ax0);
+            }
+
+            /* Posts between tiers + screws */
+            var postPos = low.map(function(v) { return [v[0] * 0.85, v[1] * 0.85]; });
+            postPos.forEach(function(p) {
+                cyl(16, 200, mBlack, p[0], 242, p[1], gPosts, 'y', 24);
+                cyl(20, 4, mSteel, p[0], 144, p[1], gPosts, 'y', 24);
+                cyl(20, 4, mSteel, p[0], 340, p[1], gPosts, 'y', 24);
+                cyl(9, 3, mSteel, p[0], 360.5, p[1], gUp, 'y', 16);
+            });
+
+            /* Three omni wheels, 120 degrees apart (kiwi drive) */
+            var RW = 330, rw = 50, wheels = [];
+            var rollGeo = new THREE.SphereGeometry(9 * S, 14, 10);
+            [90, 210, 330].forEach(function(deg) {
+                var th = deg * Math.PI / 180;
+                var outer = new THREE.Group();
+                outer.position.set(Math.cos(th) * RW * S, rw * S, Math.sin(th) * RW * S);
+                outer.rotation.y = Math.PI - th;
+                gBase.add(outer);
+                var spin = new THREE.Group();
+                outer.add(spin);
+                cyl(30, 26, mBlack, 0, 0, 0, spin, 'x', 32);
+                cyl(40, 3, mSteel, -14, 0, 0, spin, 'x', 40);
+                cyl(40, 3, mSteel, 14, 0, 0, spin, 'x', 40);
+                cyl(12, 40, mSteel, 0, 0, 0, spin, 'x', 20);
+                for (var row = 0; row < 2; row++) {
+                    for (var n = 0; n < 12; n++) {
+                        var phi = (n + row * 0.5) / 12 * Math.PI * 2;
+                        var r = new THREE.Mesh(rollGeo, mRoll);
+                        r.scale.set(1, 1, 1.75);
+                        r.position.set((row ? 8.5 : -8.5) * S, 41 * S * Math.cos(phi), 41 * S * Math.sin(phi));
+                        r.rotation.x = phi;
+                        r.castShadow = true;
+                        spin.add(r);
+                    }
+                }
+                cyl(24, 14, mSteel, 24, 0, 0, outer, 'x', 28);
+                cyl(20, 60, mMotor, 54, 0, 0, outer, 'x', 28);
+                box(62, 34, 38, mBlack, 54, 33, 0, outer);
+                wheels.push({ th: th, spin: spin });
+            });
+
+            /* Lower tier electronics */
+            box(200, 60, 95, mBatt, 0, 172, -90, gLow);
+            box(14, 64, 99, mOrange, 0, 172, -90, gLow);
+            box(70, 10, 50, mPcb, -110, 147, 70, gLow);
+            box(70, 10, 50, mPcb, 110, 147, 70, gLow);
+            box(40, 26, 30, mBlack, 0, 155, 90, gLow);
+            cyl(8, 6, mRed, 0, 171, 90, gLow, 'y', 16);
+            box(80, 22, 20, mBlack, 0, 156, 392, gLow);
+            cyl(9, 12, mSteel, -22, 156, 404, gLow, 'z', 20);
+            cyl(9, 12, mSteel, 22, 156, 404, gLow, 'z', 20);
+            var FRONT = 0.410;
+
+            /* Upper tier electronics & camera mast */
+            box(110, 4, 90, mPcb, 0, 361, -40, gUp);
+            box(100, 22, 80, mDark, 0, 374, -40, gUp);
+            for (var f = -2; f <= 2; f++) box(4, 10, 70, mSteel, f * 20, 389, -40, gUp);
+            box(22, 4, 22, mPcb, -120, 361, 60, gUp);
+
+            var camZ = up[2][1] * 0.85;
+            cyl(14, 200, mBlack, 0, 459, camZ, gUp, 'y', 24);
+            cyl(18, 4, mSteel, 0, 361, camZ, gUp, 'y', 24);
+            box(70, 8, 36, mBlack, 0, 563, camZ, gUp);
+            box(56, 22, 24, mBlack, 0, 578, camZ, gUp);
+            cyl(8, 10, mLens, 0, 578, camZ + 17, gUp, 'z', 20);
+            cyl(10, 2, mSteel, 0, 578, camZ + 22.5, gUp, 'z', 20);
+
+            /* Hanging Scroll Wall */
+            var W = 1.05;
+            var scroll = new THREE.Group();
+            scroll.position.z = W;
+            scene.add(scroll);
+            var mBoard = M(0xcfd5db, 0.9, 0);
+            var mPaper = M(0xd9cfb4, 0.85, 0);
+            var mGold = M(0xc9a24a, 0.5, 0.4);
+            var mRod = M(0x3a2a20, 0.6, 0.1);
+            var mInk = M(0x14110f, 0.9, 0);
+            function sbox(w, h, d, m, x, y, z) {
+                var o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+                o.position.set(x, y, z);
+                o.castShadow = true;
+                o.receiveShadow = true;
+                scroll.add(o);
+                return o;
+            }
+            sbox(1.5, 0.82, 0.02, mBoard, 0, 0.41, 0.02);
+            sbox(0.27, 0.53, 0.002, mGold, 0, 0.34, 0.004);
+            sbox(0.24, 0.50, 0.004, mPaper, 0, 0.34, 0);
+            [[0.4, 0.07], [0.34, 0.05], [0.29, 0.08], [0.22, 0.04], [0.16, 0.07], [0.1, 0.05]].forEach(function(s) {
+                sbox(0.04 + s[1] * 0.3, s[1], 0.002, mInk, 0, s[0] + 0.04, -0.003);
+            });
+            sbox(0.034, 0.034, 0.003, mGold, 0.07, 0.52, -0.003);
+            [0.62, 0.07].forEach(function(y) {
+                var g = new THREE.CylinderGeometry(0.012, 0.012, 0.30, 16);
+                g.rotateZ(Math.PI / 2);
+                var rod = new THREE.Mesh(g, mRod);
+                rod.position.set(0, y, -0.002);
+                rod.castShadow = true;
+                scroll.add(rod);
+                [-1, 1].forEach(function(s) {
+                    var kg = new THREE.SphereGeometry(0.017, 12, 10);
+                    var kn = new THREE.Mesh(kg, mGold);
+                    kn.position.set(s * 0.155, y, -0.002);
+                    scroll.add(kn);
+                });
+            });
+
+            /* Stand-off floor markers */
+            function floorLine(d, col) {
+                var m = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.35 });
+                var b = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.002, 0.012), m);
+                b.position.set(0, 0.002, W - d);
+                scene.add(b);
+                return m;
+            }
+            var lineRed = floorLine(0.4, 0xc4262e), lineBlue = floorLine(0.6, 0x2458c8);
+
+            /* Dimension annotations */
+            var dimGroup = new THREE.Group();
+            robot.add(dimGroup);
+            var dimMat = new THREE.LineBasicMaterial({ color: 0x3b82f6, depthTest: false, transparent: true });
+            var dotGeo = new THREE.SphereGeometry(0.0035, 10, 10);
+            var dotMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, depthTest: false });
+            var dimLabels = [];
+
+            function seg(p, q) {
+                var g = new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(p[0] * S, p[1] * S, p[2] * S),
+                    new THREE.Vector3(q[0] * S, q[1] * S, q[2] * S)
+                ]);
+                var l = new THREE.Line(g, dimMat);
+                l.renderOrder = 10;
+                dimGroup.add(l);
+            }
+            function addDim(p, q, text) {
+                seg(p, q);
+                [p, q].forEach(function(v) {
+                    var d = new THREE.Mesh(dotGeo, dotMat);
+                    d.position.set(v[0] * S, v[1] * S, v[2] * S);
+                    d.renderOrder = 11;
+                    dimGroup.add(d);
+                });
+                var lb = document.createElement('div');
+                lb.className = 'cad-dim';
+                lb.textContent = text;
+                labelsEl.appendChild(lb);
+                dimLabels.push({ el: lb, pos: new THREE.Vector3((p[0] + q[0]) / 2 * S, (p[1] + q[1]) / 2 * S, (p[2] + q[2]) / 2 * S) });
+            }
+            function edgeDim(a, b, y, off) {
+                var dx = b[0] - a[0], dz = b[1] - a[1], L = Math.hypot(dx, dz);
+                var nx = dz / L, nz = -dx / L, mx = (a[0] + b[0]) / 2, mz = (a[1] + b[1]) / 2;
+                if (nx * mx + nz * mz < 0) { nx = -nx; nz = -nz; }
+                var p = [a[0] + nx * off, y, a[1] + nz * off], q = [b[0] + nx * off, y, b[1] + nz * off];
+                seg([a[0], y, a[1]], p);
+                seg([b[0], y, b[1]], q);
+                addDim(p, q, L.toFixed(1) + ' mm');
+            }
+            function vDim(x, z, y0, y1, off, text) {
+                var l = Math.hypot(x, z) || 1, nx = x / l, nz = z / l;
+                addDim([x + nx * off, y0, z + nz * off], [x + nx * off, y1, z + nz * off], text);
+            }
+            var TOP_LOW = Y_LOW + T, TOP_UP = Y_UP + T;
+            edgeDim(low[0], low[1], TOP_LOW, 45);
+            edgeDim(low[1], low[2], TOP_LOW, 45);
+            edgeDim(up[1], up[2], TOP_UP, 45);
+            vDim(postPos[0][0], postPos[0][1], TOP_LOW, Y_UP, 55, '200.0 mm');
+            vDim(0, up[2][1] * 0.85, TOP_UP, TOP_UP + 200, 40, '200.0 mm');
+            vDim(up[0][0] * 0.5, up[0][1], Y_UP, TOP_UP, 20, '17.0 mm');
+
+            /* Stand-off floor tags */
+            var tags = [];
+            function addTag(cls, text, x, z) {
+                var t = document.createElement('div');
+                t.className = 'cad-tag ' + cls;
+                t.textContent = text;
+                labelsEl.appendChild(t);
+                tags.push({ el: t, pos: new THREE.Vector3(x, 0.01, z), cls: cls });
+                return t;
+            }
+            var tagRed = addTag('red', 'RED 400 mm', 0.5, W - 0.4);
+            var tagBlue = addTag('blue', 'BLUE 600 mm', 0.5, W - 0.6);
+
+            /* Sensor beam + path trail */
+            var beamGeo = new THREE.BufferGeometry();
+            beamGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
+            var beam = new THREE.Line(beamGeo, dimMat);
+            beam.renderOrder = 12;
+            beam.visible = false;
+            beam.frustumCulled = false;
+            scene.add(beam);
+
+            var beamLabel = document.createElement('div');
+            beamLabel.className = 'cad-dim';
+            beamLabel.hidden = true;
+            labelsEl.appendChild(beamLabel);
+
+            var TRAIL_N = 900, trailPos = new Float32Array(TRAIL_N * 3), trailCount = 0;
+            var trailGeo = new THREE.BufferGeometry();
+            trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+            trailGeo.setDrawRange(0, 0);
+            var trailMat = new THREE.LineBasicMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.8 });
+            var trail = new THREE.Line(trailGeo, trailMat);
+            trail.frustumCulled = false;
+            scene.add(trail);
+
+            function trailReset() { trailCount = 0; trailGeo.setDrawRange(0, 0); }
+            function trailPush(x, z) {
+                if (trailCount > 0) {
+                    var dx = x - trailPos[(trailCount - 1) * 3], dz = z - trailPos[(trailCount - 1) * 3 + 2];
+                    if (dx * dx + dz * dz < 0.000025) return;
+                }
+                if (trailCount >= TRAIL_N) return;
+                trailPos[trailCount * 3] = x;
+                trailPos[trailCount * 3 + 1] = 0.004;
+                trailPos[trailCount * 3 + 2] = z;
+                trailCount++;
+                trailGeo.setDrawRange(0, trailCount);
+                trailGeo.attributes.position.needsUpdate = true;
+            }
+
+            /* Camera / Orbit / Click-to-Explode Logic */
+            var az = 2.5, el = 0.5, dist = 3.1, target = new THREE.Vector3(0, 0.28, 0.4);
+            var viewT = null, showDims = true, eT = 0, ex = 0;
+            function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+            function wrap(d) { return ((d + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; }
+            function placeCamera() {
+                camera.position.set(
+                    target.x + dist * Math.cos(el) * Math.sin(az),
+                    target.y + dist * Math.sin(el),
+                    target.z + dist * Math.cos(el) * Math.cos(az)
+                );
+                camera.lookAt(target);
+            }
+            function stopView() { viewT = null; }
+
+            var pts = new Map(), pinch = 0;
+            var downPos = null;
+            function pdist() {
+                var a = Array.from(pts.values());
+                return Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]) || 1;
+            }
+
+            var bE = document.getElementById('bExplode');
+            var bD = document.getElementById('bDims');
+            function setPressed(b, v) { b.setAttribute('aria-pressed', v ? 'true' : 'false'); }
+            function toggleExplode() {
+                eT = eT ? 0 : 1;
+                setPressed(bE, eT);
+            }
+
+            cv.addEventListener('pointerdown', function(e) {
+                cv.setPointerCapture(e.pointerId);
+                pts.set(e.pointerId, [e.clientX, e.clientY]);
+                if (pts.size === 1) downPos = [e.clientX, e.clientY];
+                stopView();
+                if (pts.size === 2) pinch = pdist();
+            });
+            cv.addEventListener('pointermove', function(e) {
+                if (!pts.has(e.pointerId)) return;
+                var p = pts.get(e.pointerId), dx = e.clientX - p[0], dy = e.clientY - p[1];
+                pts.set(e.pointerId, [e.clientX, e.clientY]);
+                if (pts.size === 1) {
+                    az -= dx * 0.008;
+                    el = clamp(el + dy * 0.006, 0.03, 1.45);
+                } else if (pts.size === 2) {
+                    var d = pdist();
+                    dist = clamp(dist * pinch / d, 0.9, 6);
+                    pinch = d;
+                }
+            });
+            cv.addEventListener('pointerup', function(e) {
+                if (pts.size === 1 && downPos) {
+                    var moveDist = Math.hypot(e.clientX - downPos[0], e.clientY - downPos[1]);
+                    // If user clicks without dragging, split/unsplit the CAD model parts
+                    if (moveDist < 5) {
+                        toggleExplode();
+                    }
+                }
+                pts.delete(e.pointerId);
+                downPos = null;
+            });
+            cv.addEventListener('pointercancel', function(e) {
+                pts.delete(e.pointerId);
+                downPos = null;
+            });
+            cv.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                stopView();
+                dist = clamp(dist * Math.exp(e.deltaY * 0.001), 0.9, 6);
+            }, { passive: false });
+            cv.addEventListener('keydown', function(e) {
+                var h = true;
+                stopView();
+                if (e.key === 'ArrowLeft') az += 0.1;
+                else if (e.key === 'ArrowRight') az -= 0.1;
+                else if (e.key === 'ArrowUp') el = clamp(el + 0.08, 0.03, 1.45);
+                else if (e.key === 'ArrowDown') el = clamp(el - 0.08, 0.03, 1.45);
+                else if (e.key === '+' || e.key === '=') dist = clamp(dist * 0.9, 0.9, 6);
+                else if (e.key === '-') dist = clamp(dist / 0.9, 0.9, 6);
+                else h = false;
+                if (h) e.preventDefault();
+            });
+
+            /* Mission Simulation */
+            var sim = { state: 'idle', color: null, D: 0, t: 0, hold: 0, x: 0, z: 0, yaw: 0, vx: 0, vz: 0, w: 0 };
+            var STATE_TEXT = {
+                idle: 'Choose a scroll to start',
+                scan: 'Reading colour & heading',
+                align: 'Rotating to face scroll',
+                approach: 'Approaching target',
+                settle: 'Fine corrections',
+                locked: 'Locked in position ✓'
+            };
+            var colorEls = {
+                color: document.getElementById('tColor'),
+                target: document.getElementById('tTarget'),
+                dist: document.getElementById('tDist'),
+                yaw: document.getElementById('tYaw'),
+                lat: document.getElementById('tLat'),
+                state: document.getElementById('tState')
+            };
+            var bRed = document.getElementById('mRed'), bBlue = document.getElementById('mBlue');
+
+            function startRun(color) {
+                sim.color = color;
+                sim.D = color === 'red' ? 0.4 : 0.6;
+                mPaper.color.set(color === 'red' ? 0xc4262e : 0x2458c8);
+                var sx = (Math.random() < 0.5 ? -1 : 1) * (0.25 + Math.random() * 0.3);
+                var sy = (Math.random() < 0.5 ? -1 : 1) * (0.6 + Math.random() * 2.2);
+                sim.x = sx;
+                sim.z = -0.75 + Math.random() * 0.3;
+                sim.yaw = sy;
+                sim.vx = sim.vz = sim.w = 0;
+                sim.t = 0;
+                sim.hold = 0;
+                sim.state = 'scan';
+                trailReset();
+                trailPush(sim.x, sim.z);
+                bRed.setAttribute('aria-pressed', color === 'red' ? 'true' : 'false');
+                bBlue.setAttribute('aria-pressed', color === 'blue' ? 'true' : 'false');
+                viewT = { az: 2.5, el: 0.6, dist: 3.5 };
+            }
+            bRed.onclick = function() { startRun('red'); };
+            bBlue.onclick = function() { startRun('blue'); };
+
+            function updateSim(dt) {
+                if (sim.state === 'idle') return;
+                sim.t += dt;
+                var yawErr = wrap(-sim.yaw);
+                var cmdx = 0, cmdz = 0, cmdw = 0;
+                var goalZ = W - sim.D - FRONT;
+                var ex_ = 0 - sim.x, ez_ = goalZ - sim.z, err = Math.hypot(ex_, ez_);
+                if (sim.state === 'scan') {
+                    if (sim.t > 1.0) sim.state = 'align';
+                } else {
+                    cmdw = clamp(2.2 * yawErr, -1.9, 1.9);
+                    if (sim.state === 'align' && Math.abs(yawErr) < 0.2) sim.state = 'approach';
+                    if (sim.state !== 'align') {
+                        var s = Math.min(1, 0.32 / (1.7 * err + 1e-6));
+                        cmdx = 1.7 * ex_ * s;
+                        cmdz = 1.7 * ez_ * s;
+                    }
+                    if (sim.state === 'approach' && err < 0.02 && Math.abs(yawErr) < 0.03) sim.state = 'settle';
+                    if (sim.state === 'settle') {
+                        if (err < 0.004 && Math.abs(yawErr) < 0.0087) {
+                            sim.hold += dt;
+                            if (sim.hold > 0.6) sim.state = 'locked';
+                        } else sim.hold = 0;
+                    }
+                }
+                var a = Math.min(1, dt * 5);
+                sim.vx += (cmdx - sim.vx) * a;
+                sim.vz += (cmdz - sim.vz) * a;
+                sim.w += (cmdw - sim.w) * a;
+                sim.x += sim.vx * dt;
+                sim.z += sim.vz * dt;
+                sim.yaw += sim.w * dt;
+                trailPush(sim.x, sim.z);
+
+                var c = Math.cos(sim.yaw), sn = Math.sin(sim.yaw);
+                var vlx = sim.vx * c - sim.vz * sn, vlz = sim.vx * sn + sim.vz * c;
+                wheels.forEach(function(wh) {
+                    var tx = -Math.sin(wh.th), tz = Math.cos(wh.th);
+                    var sp = vlx * tx + vlz * tz - (RW * S) * sim.w;
+                    wh.spin.rotation.x += -sp / (rw * S) * dt;
+                });
+            }
+
+            /* UI Button Bindings */
+            bE.onclick = toggleExplode;
+            bD.onclick = function() {
+                showDims = !showDims;
+                setPressed(bD, showDims);
+            };
+            function go(a, l, d) { return function() { viewT = { az: a, el: l, dist: d }; }; }
+            document.getElementById('vIso').onclick = go(2.5, 0.5, 3.1);
+            document.getElementById('vTop').onclick = go(Math.PI, 1.45, 3.0);
+            document.getElementById('vRear').onclick = go(Math.PI, 0.12, 3.2);
+            document.getElementById('vSide').onclick = go(Math.PI / 2, 0.08, 3.2);
+            document.getElementById('zIn').onclick = function() { stopView(); dist = clamp(dist * 0.85, 0.9, 6); };
+            document.getElementById('zOut').onclick = function() { stopView(); dist = clamp(dist / 0.85, 0.9, 6); };
+
+            /* Theme Sync */
+            window.updateCadTheme = function() {
+                var isDark = document.documentElement.classList.contains('dark');
+                gridMat.uniforms.c.value.set(isDark ? 0x5b6977 : 0x7c8896);
+                var ac = isDark ? 0x60a5fa : 0x1d4ed8;
+                dimMat.color.set(ac);
+                dotMat.color.set(ac);
+                trailMat.color.set(ac);
+            };
+            window.updateCadTheme();
+
+            /* Responsive Sizing */
+            var Wd = 1, Hh = 1;
+            function resize() {
+                var rect = stage.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return;
+                Wd = rect.width;
+                Hh = rect.height;
+                renderer.setSize(Wd, Hh, false);
+                camera.aspect = Wd / Hh;
+                camera.updateProjectionMatrix();
+            }
+            window.resizeCadViewer = resize;
+            new ResizeObserver(resize).observe(stage);
+            resize();
+
+            /* Render Loop */
+            var last = performance.now(), telT = 0, v3 = new THREE.Vector3();
+            function place(el_, pos, show) {
+                if (!show) { el_.hidden = true; return; }
+                v3.copy(pos).project(camera);
+                if (v3.z > 1) { el_.hidden = true; return; }
+                el_.hidden = false;
+                el_.style.left = ((v3.x * 0.5 + 0.5) * Wd) + 'px';
+                el_.style.top = ((-v3.y * 0.5 + 0.5) * Hh) + 'px';
+            }
+
+            function tick(now) {
+                var dt = Math.min(0.05, (now - last) / 1000);
+                last = now;
+
+                // Smoothly animate exploded parts
+                ex += (eT - ex) * Math.min(1, dt * 6);
+                gLow.position.y = ex * 0.09;
+                gPosts.position.y = ex * 0.16;
+                gUp.position.y = ex * 0.32;
+                target.y = 0.28 + ex * 0.16;
+
+                updateSim(dt);
+                robot.position.set(sim.x, 0, sim.z);
+                robot.rotation.y = sim.yaw;
+                robot.updateMatrixWorld(true);
+
+                if (viewT) {
+                    var k2 = Math.min(1, dt * 4);
+                    az += wrap(viewT.az - az) * k2;
+                    el += (viewT.el - el) * k2;
+                    dist += (viewT.dist - dist) * k2;
+                    if (Math.abs(wrap(viewT.az - az)) < 0.003 && Math.abs(viewT.el - el) < 0.003 && Math.abs(viewT.dist - dist) < 0.005) viewT = null;
+                }
+                placeCamera();
+
+                /* Ultrasonic distance beam */
+                var cy = Math.cos(sim.yaw), sy = Math.sin(sim.yaw);
+                var tipx = sim.x + FRONT * sy, tipz = sim.z + FRONT * cy;
+                var rangeM = cy > 0.25 ? (W - tipz) / cy : -1;
+                var hasRange = rangeM > 0;
+                beam.visible = hasRange;
+                if (hasRange) {
+                    var bp = beamGeo.attributes.position.array;
+                    bp[0] = tipx; bp[1] = 0.156; bp[2] = tipz;
+                    bp[3] = tipx + sy * rangeM; bp[4] = 0.156; bp[5] = tipz + cy * rangeM;
+                    beamGeo.attributes.position.needsUpdate = true;
+                    v3.set(tipx + sy * rangeM * 0.5, 0.156, tipz + cy * rangeM * 0.5);
+                    var mm = Math.round(rangeM * 1000);
+                    beamLabel.textContent = (sim.state === 'locked' ? mm + ' mm ✓' : mm + ' mm');
+                    place(beamLabel, v3.clone(), true);
+                } else {
+                    beamLabel.hidden = true;
+                }
+
+                /* Dimension labels */
+                var showNow = showDims && ex < 0.02 && sim.state === 'idle';
+                dimGroup.visible = showNow;
+                for (var i = 0; i < dimLabels.length; i++) {
+                    var d = dimLabels[i];
+                    if (!showNow) { d.el.hidden = true; continue; }
+                    v3.copy(d.pos).applyMatrix4(robot.matrixWorld);
+                    place(d.el, v3.clone(), true);
+                }
+                var redOn = sim.color === 'red', blueOn = sim.color === 'blue';
+                lineRed.opacity = redOn ? 1 : 0.3;
+                lineBlue.opacity = blueOn ? 1 : 0.3;
+                tags.forEach(function(t) { place(t.el, t.pos, true); });
+                tagRed.classList.toggle('on', redOn);
+                tagBlue.classList.toggle('on', blueOn);
+
+                /* Live Telemetry Readout */
+                telT += dt;
+                if (telT > 0.1) {
+                    telT = 0;
+                    colorEls.state.textContent = STATE_TEXT[sim.state];
+                    if (sim.state === 'idle' || (sim.state === 'scan' && sim.t < 0.4)) {
+                        colorEls.color.textContent = sim.state === 'idle' ? '—' : 'Reading…';
+                        colorEls.color.style.color = '';
+                    } else {
+                        colorEls.color.textContent = sim.color === 'red' ? 'Red' : 'Blue';
+                        colorEls.color.style.color = sim.color === 'red' ? '#ef4444' : '#3b82f6';
+                    }
+                    if (sim.state === 'idle') {
+                        colorEls.target.textContent = '—';
+                    } else {
+                        colorEls.target.textContent = Math.round(sim.D * 1000) + ' mm';
+                    }
+                    colorEls.dist.textContent = hasRange ? Math.round(rangeM * 1000) + ' mm' : 'No return';
+                    colorEls.yaw.textContent = (sim.state === 'idle' ? 0 : (-sim.yaw * 180 / Math.PI)).toFixed(1) + '°';
+                    colorEls.lat.textContent = Math.round(sim.x * 1000) + ' mm';
+                }
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
         // --- Bootstrapping ---
         document.addEventListener('DOMContentLoaded', () => {
             initShapeGrid();
             initScrollExpand();
             initAccordionGallery();
+            initCadProject();
             
             // Store instance globally so we can refresh it on tab change
             window.masonryInstance = new MasonryGallery('masonry-container', materialsData);
