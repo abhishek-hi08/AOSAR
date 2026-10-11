@@ -340,7 +340,7 @@
         input[type="range"].video-range {
             -webkit-appearance: none;
             appearance: none;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(148, 163, 184, 0.25);
             height: 5px;
             border-radius: 999px;
             cursor: pointer;
@@ -368,6 +368,18 @@
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.9);
             cursor: pointer;
             transition: transform 0.15s ease;
+        }
+
+        /* CAD BLUEPRINT GRID & DEEP-DIVE STYLING */
+        .blueprint-surface {
+            background-image:
+                linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .cad-layer-card.active-layer {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.35);
         }
 
         /* UTILS */
@@ -529,9 +541,9 @@
             </section>
         </div>
 
-        <!-- PAGE 2: CAD PROJECT (Tri-Tier Robot WebGL & Telemetry) -->
-        <div id="page-cad" class="page-section pt-24 pb-20">
-            <section class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+        <!-- PAGE 2: CAD PROJECT (Tri-Tier Robot WebGL, Telemetry & Full Analytix-Style Engineering Deep-Dive) -->
+        <div id="page-cad" class="page-section pt-24 pb-24">
+            <section class="max-w-7xl mx-auto px-6 py-8 space-y-16">
                 
                 <!-- Hero Grid: Project Info + Interactive 3D WebGL Viewer -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -656,7 +668,7 @@
                 </div>
 
                 <!-- 3-Column Technical Specifications & Mission Breakdown -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
                     
                     <!-- Card 1: Mission Steps -->
                     <div class="p-6 rounded-2xl bg-white/70 dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 border-t-2 border-t-accent space-y-4">
@@ -739,6 +751,753 @@
                                 <dd class="font-mono font-medium text-gray-900 dark:text-white">589 mm</dd>
                             </div>
                         </dl>
+                    </div>
+                </div>
+
+                <!-- ========================================================================= -->
+                <!-- ANALYTIX-STYLE CAD ENGINEERING DEEP-DIVE DOCUMENTATION (CAD PAGE ONLY)    -->
+                <!-- ========================================================================= -->
+
+                <div class="pt-8 border-t border-gray-200 dark:border-white/10 space-y-20">
+
+                    <!-- Sticky Quick-Jump Engineering Sub-Navigation -->
+                    <div class="sticky top-20 z-30 py-3 px-4 rounded-2xl bg-white/85 dark:bg-[#0b0e14]/85 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-lg flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-accent"></span>
+                            <span class="font-mono text-xs uppercase tracking-widest font-semibold text-gray-800 dark:text-gray-200">CAD Dossier // AOSAR-TR01</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+                            <a href="#cad-sec-01" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">01.Problem</a>
+                            <a href="#cad-sec-02" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">02.Tiers</a>
+                            <a href="#cad-sec-03" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">03.Kinematics</a>
+                            <a href="#cad-sec-04" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">04.Architecture</a>
+                            <a href="#cad-sec-05" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">05.Blueprints</a>
+                            <a href="#cad-sec-06" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">06.BOM</a>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 01: PROBLEM STATEMENT & DESIGN OBJECTIVES -->
+                    <div id="cad-sec-01" class="scroll-mt-36 space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">01 // Engineering Problem Statement &amp; Design Objectives</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Autonomous Target Identification &amp; Precision Stand-Off Locking</h2>
+                            </div>
+                            <p class="font-mono text-xs text-gray-500 dark:text-gray-400 max-w-sm">
+                                TOLERANCE SPEC: &plusmn;2.0 MM AXIAL &middot; &plusmn;0.5&deg; HEADING ALIGNMENT
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                            <!-- Left Narrative Overview -->
+                            <div class="lg:col-span-7 p-7 rounded-3xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 space-y-5">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">The Arena Challenge</h3>
+                                <p class="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                                    In autonomous robotic inspection trials, a mobile platform is deployed at an arbitrary starting coordinate and random yaw orientation inside the arena. Mounted on the far datum wall is a vertically suspended target scroll encoded by colour (<strong class="text-red-500">Crimson Red</strong> or <strong class="text-blue-500">Cobalt Blue</strong>).
+                                </p>
+                                <p class="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+                                    Conventional differential-drive robots suffer from non-holonomic constraints—requiring multi-point turns that induce wheel slip, cumulative odometry drift, and camera field-of-view loss. Team AOSAR engineered the <strong>Tri-Tier Scanner Robot</strong> around a <strong>120&deg; 3-wheel Kiwi-Drive holonomic chassis</strong>, decoupling rotational alignment ($\omega$) from planar translation ($V_x, V_z$).
+                                </p>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
+                                    <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/30">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-mono text-xs font-bold uppercase text-red-600 dark:text-red-400">Condition A // Red Scroll</span>
+                                            <span class="font-mono text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300">400 mm</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                                            Close-range optical inspection profile. Ultrasonic array locks the front bumper datum at exactly <strong>400.0 mm</strong> from the scroll plane.
+                                        </p>
+                                    </div>
+                                    <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="font-mono text-xs font-bold uppercase text-blue-600 dark:text-blue-400">Condition B // Blue Scroll</span>
+                                            <span class="font-mono text-xs px-2 py-0.5 rounded bg-blue-500/20 text-blue-600 dark:text-blue-300">600 mm</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                                            Wide-field macro framing profile. Closed-loop PID controller halts forward translation at <strong>600.0 mm</strong> stand-off distance.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right KPI Metrics Grid -->
+                            <div class="lg:col-span-5 grid grid-cols-2 gap-4">
+                                <div class="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between">
+                                    <span class="font-mono text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Degrees of Freedom</span>
+                                    <div class="my-3">
+                                        <span class="text-3xl md:text-4xl font-extrabold font-mono text-accent">3-DOF</span>
+                                        <span class="block text-xs text-gray-500 mt-1">Planar Holonomic ($X, Z, \theta$)</span>
+                                    </div>
+                                    <div class="text-[11px] font-mono text-emerald-500">Zero Turn Radius</div>
+                                </div>
+
+                                <div class="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between">
+                                    <span class="font-mono text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Chassis Mass Distribution</span>
+                                    <div class="my-3">
+                                        <span class="text-3xl md:text-4xl font-extrabold font-mono text-purple-500">68:32</span>
+                                        <span class="block text-xs text-gray-500 mt-1">Lower vs. Upper Tier Mass Ratio</span>
+                                    </div>
+                                    <div class="text-[11px] font-mono text-gray-400">CoG Height: 164 mm</div>
+                                </div>
+
+                                <div class="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between">
+                                    <span class="font-mono text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Actuation Drive</span>
+                                    <div class="my-3">
+                                        <span class="text-3xl md:text-4xl font-extrabold font-mono text-gray-900 dark:text-white">200</span>
+                                        <span class="block text-xs text-gray-500 mt-1">RPM Closed-Loop Geared DC (&times;3)</span>
+                                    </div>
+                                    <div class="text-[11px] font-mono text-accent">Quadrature Encoders</div>
+                                </div>
+
+                                <div class="p-5 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between">
+                                    <span class="font-mono text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">Camera Apex Elevation</span>
+                                    <div class="my-3">
+                                        <span class="text-3xl md:text-4xl font-extrabold font-mono text-gray-900 dark:text-white">589<span class="text-lg">mm</span></span>
+                                        <span class="block text-xs text-gray-500 mt-1">Optical Axis at Y = 578 mm</span>
+                                    </div>
+                                    <div class="text-[11px] font-mono text-emerald-500">Parallax-Free Sightline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 02: STRUCTURAL CAD & MULTI-TIER ARCHITECTURE BREAKDOWN -->
+                    <div id="cad-sec-02" class="scroll-mt-36 space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">02 // Structural CAD &amp; Vertical Packaging</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">4-Stage Vertical Subsystem Stratification</h2>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 max-w-md">
+                                Click any structural layer card below to automatically focus and explode the 3D WebGL CAD assembly above.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Layer 1 Card -->
+                            <div class="cad-layer-card p-6 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2.5 py-1 rounded-md bg-accent/15 text-accent font-mono text-xs font-bold">LAYER 01</span>
+                                        <span class="font-mono text-xs text-gray-500">Y: 0 &rarr; 142 mm</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Drivetrain &amp; Lower Frame</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        600.0 mm base &times; 684.0 mm side triangular composite deck (17.0 mm thick) reinforced by 26 &times; 25 mm box-section perimeter rails. Houses three 120&deg; motor mounts and &Oslash;100 mm dual-row omni wheels.
+                                    </p>
+                                    <ul class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-white/10 font-mono text-[11px] text-gray-600 dark:text-gray-300">
+                                        <li>&bull; Wheel Radius: R = 50.0 mm</li>
+                                        <li>&bull; Drive Circle: R_w = 330.0 mm</li>
+                                        <li>&bull; Ground Clearance: 100.0 mm</li>
+                                    </ul>
+                                </div>
+                                <button onclick="inspectCadLayer('base')" class="mt-6 w-full py-2 px-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-accent hover:text-white text-gray-800 dark:text-gray-200 font-mono text-xs font-semibold transition-colors cursor-pointer">
+                                    Inspect in 3D Viewer &uarr;
+                                </button>
+                            </div>
+
+                            <!-- Layer 2 Card -->
+                            <div class="cad-layer-card p-6 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2.5 py-1 rounded-md bg-purple-500/15 text-purple-500 font-mono text-xs font-bold">LAYER 02</span>
+                                        <span class="font-mono text-xs text-gray-500">Y: 142 &rarr; 210 mm</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">High-Current Power &amp; Ranging</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Heavy 12V 10Ah LiFePO4 battery (200 &times; 60 &times; 95 mm) anchored at the geometric centroid to suppress pitch/roll moments during rapid holonomic braking. Dual Cytron MDD10A drivers sit flanked left and right.
+                                    </p>
+                                    <ul class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-white/10 font-mono text-[11px] text-gray-600 dark:text-gray-300">
+                                        <li>&bull; Front Ultrasonic: Z = +404 mm</li>
+                                        <li>&bull; Motor Drivers: 2&times; MDD10A (10A)</li>
+                                        <li>&bull; Safety: Main Switch + Blade Fuse</li>
+                                    </ul>
+                                </div>
+                                <button onclick="inspectCadLayer('low')" class="mt-6 w-full py-2 px-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-accent hover:text-white text-gray-800 dark:text-gray-200 font-mono text-xs font-semibold transition-colors cursor-pointer">
+                                    Explode &amp; Inspect &uarr;
+                                </button>
+                            </div>
+
+                            <!-- Layer 3 Card -->
+                            <div class="cad-layer-card p-6 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2.5 py-1 rounded-md bg-amber-500/15 text-amber-500 font-mono text-xs font-bold">LAYER 03</span>
+                                        <span class="font-mono text-xs text-gray-500">Y: 142 &rarr; 342 mm</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Inter-Tier Stand-Off Pillars</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Three &Oslash;32.0 mm cylindrical structural columns (exact 200.0 mm vertical span) inset at 85% vertex radius. Clamped with &Oslash;40 mm steel flange washers to eliminate torsional flex between decks.
+                                    </p>
+                                    <ul class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-white/10 font-mono text-[11px] text-gray-600 dark:text-gray-300">
+                                        <li>&bull; Pillar Height: 200.0 mm</li>
+                                        <li>&bull; Outer Diameter: &Oslash;32.0 mm</li>
+                                        <li>&bull; EMI Separation: 200 mm Air Gap</li>
+                                    </ul>
+                                </div>
+                                <button onclick="inspectCadLayer('posts')" class="mt-6 w-full py-2 px-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-accent hover:text-white text-gray-800 dark:text-gray-200 font-mono text-xs font-semibold transition-colors cursor-pointer">
+                                    View Side Elevation &uarr;
+                                </button>
+                            </div>
+
+                            <!-- Layer 4 Card -->
+                            <div class="cad-layer-card p-6 rounded-2xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-500 font-mono text-xs font-bold">LAYER 04</span>
+                                        <span class="font-mono text-xs text-gray-500">Y: 342 &rarr; 589 mm</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Logic Deck &amp; Vision Mast</h3>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        636.6 mm upper triangular plate isolating sensitive 3.3V/5V logic from motor brush noise. Supports the ESP32-WROOM-32, finned aluminum heatsink, MPU6050 IMU, and the 200.0 mm front camera mast.
+                                    </p>
+                                    <ul class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-white/10 font-mono text-[11px] text-gray-600 dark:text-gray-300">
+                                        <li>&bull; Upper Edge: 636.6 mm</li>
+                                        <li>&bull; Camera Mast: +200.0 mm Post</li>
+                                        <li>&bull; Total Height: 589.0 mm</li>
+                                    </ul>
+                                </div>
+                                <button onclick="inspectCadLayer('top')" class="mt-6 w-full py-2 px-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-accent hover:text-white text-gray-800 dark:text-gray-200 font-mono text-xs font-semibold transition-colors cursor-pointer">
+                                    Inspect Upper Deck &uarr;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 03: 120° KIWI-DRIVE OMNIDIRECTIONAL KINEMATICS & INTERACTIVE SIMULATOR -->
+                    <div id="cad-sec-03" class="scroll-mt-36 space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">03 // Holonomic Locomotion &amp; Mathematical Model</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">120&deg; Kiwi-Drive Inverse Kinematics</h2>
+                            </div>
+                            <p class="font-mono text-xs text-gray-500 dark:text-gray-400">
+                                WHEEL ANGLES: &theta;₁ = 90&deg; (FRONT) &middot; &theta;₂ = 210&deg; (REAR-L) &middot; &theta;₃ = 330&deg; (REAR-R)
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                            
+                            <!-- Left Column: Mathematical Formulation & Matrix -->
+                            <div class="lg:col-span-6 p-7 rounded-3xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between space-y-6">
+                                <div class="space-y-4">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Inverse Kinematics Transformation</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                        Each &Oslash;100 mm omni wheel ($r = 50\text{ mm}$) is mounted at radial distance $R = 330\text{ mm}$ from the robot's center of mass at angles $\theta_i \in \{90^\circ, 210^\circ, 330^\circ\}$. Passive peripheral rollers allow free slip perpendicular to each wheel's drive plane.
+                                    </p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                        To command a desired robot body velocity vector $\mathbf{V}_b = [V_x, V_z, \omega]^T$ in the arena frame, the ESP32 computes individual wheel angular velocities $\omega_i$ (rad/s) at 100 Hz via the exact inverse Jacobian matrix:
+                                    </p>
+                                </div>
+
+                                <!-- Monospace Matrix Block -->
+                                <div class="p-5 rounded-2xl bg-slate-900 text-blue-300 font-mono text-xs md:text-sm overflow-x-auto border border-blue-500/30 shadow-inner">
+                                    <div class="text-[10px] uppercase tracking-widest text-gray-400 mb-3">// KIWI-DRIVE INVERSE JACOBIAN MATRIX (r = 0.05m, R = 0.33m)</div>
+                                    <pre class="leading-relaxed">┌ ω₁ ┐     1   ┌ -sin(90°)   cos(90°)   -R ┐ ┌ Vx ┐
+│ ω₂ │ = ───── │ -sin(210°)  cos(210°)  -R │ │ Vz │
+└ ω₃ ┘     r   └ -sin(330°)  cos(330°)  -R ┘ └ ω  ┘
+
+ω₁ (90° Front)  = ( -1.000·Vx + 0.000·Vz - 0.330·ω ) / 0.050
+ω₂ (210° RearL) = ( +0.500·Vx - 0.866·Vz - 0.330·ω ) / 0.050
+ω₃ (330° RearR) = ( +0.500·Vx + 0.866·Vz - 0.330·ω ) / 0.050</pre>
+                                </div>
+
+                                <!-- Key Kinematic Properties -->
+                                <div class="grid grid-cols-3 gap-3 pt-2">
+                                    <div class="p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                                        <span class="block font-mono text-[10px] text-gray-500 uppercase">Pure Forward (+Vz)</span>
+                                        <span class="font-mono text-xs font-bold text-gray-900 dark:text-white mt-1 block">&omega;₁ = 0, &omega;₂ = &minus;&omega;₃</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                                        <span class="block font-mono text-[10px] text-gray-500 uppercase">Pure Strafe (+Vx)</span>
+                                        <span class="font-mono text-xs font-bold text-gray-900 dark:text-white mt-1 block">&omega;₂ = &omega;₃ = &minus;&frac12;&omega;₁</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                                        <span class="block font-mono text-[10px] text-gray-500 uppercase">Pure Spin (&omega;)</span>
+                                        <span class="font-mono text-xs font-bold text-gray-900 dark:text-white mt-1 block">&omega;₁ = &omega;₂ = &omega;₃</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Interactive Holonomic Vector & RPM Simulator -->
+                            <div class="lg:col-span-6 p-7 rounded-3xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 flex flex-col justify-between space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span class="font-mono text-[10px] uppercase tracking-widest text-accent block">Interactive Sandbox</span>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Live Kiwi-Drive RPM Solver</h3>
+                                    </div>
+                                    <button id="kin-reset" class="px-3 py-1 rounded-lg text-xs font-mono bg-gray-200 dark:bg-white/10 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors cursor-pointer">
+                                        Reset Vector
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+                                    <!-- SVG Vector Plot -->
+                                    <div class="sm:col-span-6 flex justify-center">
+                                        <svg id="kin-svg" viewBox="-140 -140 280 280" class="w-56 h-56 rounded-2xl blueprint-surface border border-gray-200 dark:border-white/10 bg-slate-950/90 p-2">
+                                            <!-- Reference Circle R=95 -->
+                                            <circle cx="0" cy="0" r="95" fill="none" stroke="rgba(59,130,246,0.25)" stroke-dasharray="4 4" stroke-width="1.5"/>
+                                            <!-- Chassis Triangle -->
+                                            <polygon points="0,-95 -82,47.5 82,47.5" fill="rgba(59,130,246,0.08)" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                                            <!-- Coordinate Crosshair -->
+                                            <line x1="-120" y1="0" x2="120" y2="0" stroke="rgba(148,163,184,0.15)" stroke-width="1"/>
+                                            <line x1="0" y1="-120" x2="0" y2="120" stroke="rgba(148,163,184,0.15)" stroke-width="1"/>
+                                            <text x="4" y="-108" fill="#60a5fa" font-family="IBM Plex Mono" font-size="9">+Vz (Front)</text>
+
+                                            <!-- Wheel 1 (90° Top/Front in SVG: (0, -95)) -->
+                                            <g transform="translate(0, -95)">
+                                                <rect x="-18" y="-5" width="36" height="10" rx="3" fill="#1e293b" stroke="#60a5fa" stroke-width="1.5"/>
+                                                <text x="24" y="4" fill="#94a3b8" font-family="IBM Plex Mono" font-size="9">W1 (90°)</text>
+                                            </g>
+                                            <!-- Wheel 2 (210° Bottom-Left: (-82, 47.5)) -->
+                                            <g transform="translate(-82, 47.5) rotate(-60)">
+                                                <rect x="-18" y="-5" width="36" height="10" rx="3" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+                                            </g>
+                                            <text x="-126" y="75" fill="#94a3b8" font-family="IBM Plex Mono" font-size="9">W2 (210°)</text>
+
+                                            <!-- Wheel 3 (330° Bottom-Right: (82, 47.5)) -->
+                                            <g transform="translate(82, 47.5) rotate(60)">
+                                                <rect x="-18" y="-5" width="36" height="10" rx="3" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                                            </g>
+                                            <text x="65" y="75" fill="#94a3b8" font-family="IBM Plex Mono" font-size="9">W3 (330°)</text>
+
+                                            <!-- Dynamic Resultant Velocity Vector Arrow -->
+                                            <defs>
+                                                <marker id="vec-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#3b82f6"/>
+                                                </marker>
+                                            </defs>
+                                            <line id="kin-vec-line" x1="0" y1="0" x2="0" y2="-55" stroke="#3b82f6" stroke-width="3.5" marker-end="url(#vec-arrow)"/>
+                                            <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+                                        </svg>
+                                    </div>
+
+                                    <!-- Sliders -->
+                                    <div class="sm:col-span-6 space-y-4">
+                                        <div>
+                                            <div class="flex justify-between text-xs font-mono mb-1">
+                                                <label for="kin-vx" class="text-gray-600 dark:text-gray-300">Lateral V_x</label>
+                                                <span id="kin-vx-val" class="text-accent font-semibold">0 mm/s</span>
+                                            </div>
+                                            <input id="kin-vx" type="range" min="-350" max="350" step="10" value="0" class="video-range w-full">
+                                        </div>
+
+                                        <div>
+                                            <div class="flex justify-between text-xs font-mono mb-1">
+                                                <label for="kin-vz" class="text-gray-600 dark:text-gray-300">Forward V_z</label>
+                                                <span id="kin-vz-val" class="text-accent font-semibold">250 mm/s</span>
+                                            </div>
+                                            <input id="kin-vz" type="range" min="-350" max="350" step="10" value="250" class="video-range w-full">
+                                        </div>
+
+                                        <div>
+                                            <div class="flex justify-between text-xs font-mono mb-1">
+                                                <label for="kin-w" class="text-gray-600 dark:text-gray-300">Yaw Rate &omega;</label>
+                                                <span id="kin-w-val" class="text-accent font-semibold">0.00 rad/s</span>
+                                            </div>
+                                            <input id="kin-w" type="range" min="-1.5" max="1.5" step="0.05" value="0" class="video-range w-full">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Live Calculated Wheel RPM Readouts -->
+                                <div class="grid grid-cols-3 gap-3 pt-2 border-t border-gray-200 dark:border-white/10">
+                                    <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                                        <span class="block font-mono text-[10px] text-blue-400 uppercase">Wheel 1 (90&deg;)</span>
+                                        <b id="kin-rpm-1" class="font-mono text-base text-gray-900 dark:text-white mt-0.5 block">0.0 RPM</b>
+                                        <span id="kin-pwm-1" class="font-mono text-[10px] text-gray-500">PWM: 0%</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                                        <span class="block font-mono text-[10px] text-purple-400 uppercase">Wheel 2 (210&deg;)</span>
+                                        <b id="kin-rpm-2" class="font-mono text-base text-gray-900 dark:text-white mt-0.5 block">-41.3 RPM</b>
+                                        <span id="kin-pwm-2" class="font-mono text-[10px] text-gray-500">PWM: 21%</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                                        <span class="block font-mono text-[10px] text-emerald-400 uppercase">Wheel 3 (330&deg;)</span>
+                                        <b id="kin-rpm-3" class="font-mono text-base text-gray-900 dark:text-white mt-0.5 block">+41.3 RPM</b>
+                                        <span id="kin-pwm-3" class="font-mono text-[10px] text-gray-500">PWM: 21%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 04: ELECTRONICS, POWER ARCHITECTURE & SENSOR FUSION PIPELINE -->
+                    <div id="cad-sec-04" class="scroll-mt-36 space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">04 // Electrical Bus &amp; Control Topology</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Power Distribution &amp; Sensor Fusion Pipeline</h2>
+                            </div>
+                            <p class="font-mono text-xs text-gray-500 dark:text-gray-400">
+                                DUAL-RAIL ISOLATION: 12.8V TRACTION BUS &middot; 5.0V / 3.3V LOGIC BUS
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Power Distribution Block Diagram -->
+                            <div class="p-7 rounded-3xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Power Distribution &amp; Filtering Tree</h3>
+                                    <span class="px-2.5 py-1 rounded bg-amber-500/15 text-amber-500 font-mono text-xs">12V 10Ah LiFePO4</span>
+                                </div>
+                                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                    High-current inductive spikes from three 200 RPM brushed DC motors are decoupled from the ESP32 and I2C sensors using a multi-stage capacitor bank (10&times; 470–1000 &micro;F electrolytic bulk reservoirs + 2&times; 0.1 &micro;F ceramic bypass discs) and an MP1584 high-frequency buck regulator.
+                                </p>
+
+                                <div class="space-y-3 font-mono text-xs">
+                                    <div class="p-3.5 rounded-xl bg-gray-100 dark:bg-white/5 border-l-4 border-amber-500 flex items-center justify-between">
+                                        <div>
+                                            <span class="font-bold text-gray-900 dark:text-white block">1. Primary Energy Storage</span>
+                                            <span class="text-gray-500 text-[11px]">12V 10Ah LiFePO4 Pack &rarr; Inline Blade Fuse &rarr; Main Toggle Switch</span>
+                                        </div>
+                                        <span class="text-amber-500 font-bold">12.8V DC</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-gray-100 dark:bg-white/5 border-l-4 border-red-500 flex items-center justify-between">
+                                        <div>
+                                            <span class="font-bold text-gray-900 dark:text-white block">2. High-Current Traction Bus</span>
+                                            <span class="text-gray-500 text-[11px]">Screw Terminal Block &rarr; 2&times; Cytron MDD10A Drivers &rarr; 3&times; 200 RPM Motors</span>
+                                        </div>
+                                        <span class="text-red-400 font-bold">Up to 20A</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-gray-100 dark:bg-white/5 border-l-4 border-accent flex items-center justify-between">
+                                        <div>
+                                            <span class="font-bold text-gray-900 dark:text-white block">3. Regulated Logic &amp; Sensor Bus</span>
+                                            <span class="text-gray-500 text-[11px]">MP1584 Buck Converter + 10&times; 1000&micro;F &amp; 2&times; 0.1&micro;F Caps &rarr; ESP32 &amp; Peripherals</span>
+                                        </div>
+                                        <span class="text-accent font-bold">5.0V / 3.3V</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-gray-100 dark:bg-white/5 border-l-4 border-emerald-500 flex items-center justify-between">
+                                        <div>
+                                            <span class="font-bold text-gray-900 dark:text-white block">4. Signal Level Shifting Network</span>
+                                            <span class="text-gray-500 text-[11px]">2 k&Omega; / 1 M&Omega; Axial Resistor Dividers on 5V Ultrasonic Echo &amp; Encoder Lines</span>
+                                        </div>
+                                        <span class="text-emerald-400 font-bold">3.3V Safe GPIO</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Closed-Loop Sensor Fusion & FSM Pipeline -->
+                            <div class="p-7 rounded-3xl bg-white/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Autonomous Finite State Machine (FSM)</h3>
+                                    <span class="px-2.5 py-1 rounded bg-accent/15 text-accent font-mono text-xs">ESP32 Dual-Core</span>
+                                </div>
+                                <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                    The onboard software executes a deterministic 5-state control pipeline. Sensor inputs from the mast camera, upper-tier MPU6050 6-axis IMU, front dual HC-SR04 ultrasonic sensors, and 3 quadrature wheel encoders are fused in real time:
+                                </p>
+
+                                <div class="space-y-3">
+                                    <div class="flex gap-3.5 items-start p-3 rounded-xl bg-gray-100/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/5">
+                                        <span class="font-mono text-xs font-bold px-2 py-1 rounded bg-accent text-white">S1</span>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase font-mono">STATE_SCAN // HSV Colour Segmentation</h4>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Corner mast camera (Y = 578 mm) classifies scroll hue and assigns target stand-off $D_{\text{target}} \in \{400\text{ mm}, 600\text{ mm}\}$.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3.5 items-start p-3 rounded-xl bg-gray-100/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/5">
+                                        <span class="font-mono text-xs font-bold px-2 py-1 rounded bg-purple-600 text-white">S2</span>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase font-mono">STATE_ALIGN // Pure Yaw Rotation</h4>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">MPU6050 Z-axis gyro integration + ultrasonic echo return maximizes normal incidence; robot spins in place ($\omega_1=\omega_2=\omega_3$) until $|\theta_{\text{err}}| &lt; 0.2\text{ rad}$.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3.5 items-start p-3 rounded-xl bg-gray-100/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/5">
+                                        <span class="font-mono text-xs font-bold px-2 py-1 rounded bg-blue-600 text-white">S3</span>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase font-mono">STATE_APPROACH // Coupled Holonomic Glide</h4>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Simultaneous lateral ($V_x$) and forward ($V_z$) vectoring closes both lateral offset and range error while maintaining zero yaw error.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3.5 items-start p-3 rounded-xl bg-gray-100/80 dark:bg-white/[0.03] border border-gray-200 dark:border-white/5">
+                                        <span class="font-mono text-xs font-bold px-2 py-1 rounded bg-emerald-600 text-white">S4</span>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase font-mono">STATE_SETTLE &amp; LOCKED // PID Micro-Trim</h4>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Encoder feedback damps residual oscillation until range error $&lt; 4\text{ mm}$ and heading error $&lt; 0.5^\circ$ continuously for $0.6\text{ s}$.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 05: ENGINEERING BLUEPRINTS & ORTHOGRAPHIC CAD VIEWS -->
+                    <div id="cad-sec-05" class="scroll-mt-36 space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">05 // Orthographic Technical Drawings</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Dimensioned CAD Blueprints (Scale 1:10)</h2>
+                            </div>
+                            <p class="font-mono text-xs text-gray-500 dark:text-gray-400">
+                                ALL DIMENSIONS IN MILLIMETERS (MM) &middot; THIRD-ANGLE PROJECTION
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Orthographic Drawing 1: Top Plan View -->
+                            <div class="p-6 rounded-3xl bg-slate-950 border border-blue-500/30 blueprint-surface space-y-4 shadow-xl">
+                                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                                    <div>
+                                        <span class="font-mono text-[10px] text-accent uppercase tracking-widest block">DWG-01 // TOP ORTHOGRAPHIC PLAN</span>
+                                        <h3 class="text-base font-bold text-white">Triangular Deck Footprint &amp; 120&deg; Wheel Layout</h3>
+                                    </div>
+                                    <button onclick="inspectCadLayer('topview')" class="px-3 py-1 rounded bg-accent/20 hover:bg-accent text-blue-300 hover:text-white font-mono text-xs transition-colors cursor-pointer">
+                                        Match 3D View &uarr;
+                                    </button>
+                                </div>
+
+                                <svg viewBox="0 0 500 380" class="w-full h-auto">
+                                    <!-- Centerlines -->
+                                    <line x1="250" y1="30" x2="250" y2="340" stroke="rgba(96,165,250,0.25)" stroke-dasharray="6 4" stroke-width="1"/>
+                                    <line x1="70" y1="215" x2="430" y2="215" stroke="rgba(96,165,250,0.25)" stroke-dasharray="6 4" stroke-width="1"/>
+
+                                    <!-- Lower Plate Triangle (600 base, 684 sides) -->
+                                    <polygon points="250,55 110,295 390,295" fill="rgba(59,130,246,0.08)" stroke="#60a5fa" stroke-width="2"/>
+                                    <!-- Upper Plate Triangle (636.6 scaled) -->
+                                    <polygon points="250,72 124,286 376,286" fill="none" stroke="#a855f7" stroke-dasharray="5 3" stroke-width="1.5"/>
+
+                                    <!-- 3 Stand-off Posts -->
+                                    <circle cx="250" cy="82" r="7" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+                                    <circle cx="135" cy="278" r="7" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+                                    <circle cx="365" cy="278" r="7" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+
+                                    <!-- 3 Omni Wheels (90°, 210°, 330°) -->
+                                    <rect x="226" y="34" width="48" height="14" rx="3" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                                    <g transform="translate(102, 298) rotate(-60)">
+                                        <rect x="-24" y="-7" width="48" height="14" rx="3" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                                    </g>
+                                    <g transform="translate(398, 298) rotate(60)">
+                                        <rect x="-24" y="-7" width="48" height="14" rx="3" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                                    </g>
+
+                                    <!-- Dimension: Base 600.0 mm -->
+                                    <line x1="110" y1="330" x2="390" y2="330" stroke="#60a5fa" stroke-width="1.2"/>
+                                    <line x1="110" y1="298" x2="110" y2="336" stroke="#60a5fa" stroke-width="1"/>
+                                    <line x1="390" y1="298" x2="390" y2="336" stroke="#60a5fa" stroke-width="1"/>
+                                    <rect x="205" y="320" width="90" height="18" rx="3" fill="#0f172a" stroke="#3b82f6"/>
+                                    <text x="250" y="333" text-anchor="middle" fill="#93c5fd" font-family="IBM Plex Mono" font-size="11">600.0 mm</text>
+
+                                    <!-- Dimension: Side 684.0 mm -->
+                                    <line x1="398" y1="280" x2="265" y2="48" stroke="#60a5fa" stroke-width="1.2"/>
+                                    <rect x="315" y="145" width="90" height="18" rx="3" fill="#0f172a" stroke="#3b82f6"/>
+                                    <text x="360" y="158" text-anchor="middle" fill="#93c5fd" font-family="IBM Plex Mono" font-size="11">684.0 mm</text>
+
+                                    <!-- Dimension: Upper Edge 636.6 mm -->
+                                    <rect x="85" y="145" width="102" height="18" rx="3" fill="#0f172a" stroke="#a855f7"/>
+                                    <text x="136" y="158" text-anchor="middle" fill="#d8b4fe" font-family="IBM Plex Mono" font-size="10">UP: 636.6 mm</text>
+                                </svg>
+                            </div>
+
+                            <!-- Orthographic Drawing 2: Side Elevation View -->
+                            <div class="p-6 rounded-3xl bg-slate-950 border border-blue-500/30 blueprint-surface space-y-4 shadow-xl">
+                                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                                    <div>
+                                        <span class="font-mono text-[10px] text-accent uppercase tracking-widest block">DWG-02 // SIDE ELEVATION PROFILE</span>
+                                        <h3 class="text-base font-bold text-white">Vertical Tier Stack &amp; 589.0 mm Mast Datum</h3>
+                                    </div>
+                                    <button onclick="inspectCadLayer('posts')" class="px-3 py-1 rounded bg-accent/20 hover:bg-accent text-blue-300 hover:text-white font-mono text-xs transition-colors cursor-pointer">
+                                        Match 3D View &uarr;
+                                    </button>
+                                </div>
+
+                                <svg viewBox="0 0 500 380" class="w-full h-auto">
+                                    <!-- Ground Datum Line Y=0 -->
+                                    <line x1="40" y1="330" x2="460" y2="330" stroke="#475569" stroke-width="2"/>
+                                    <text x="50" y="348" fill="#64748b" font-family="IBM Plex Mono" font-size="10">GROUND DATUM (Y = 0.0 mm)</text>
+
+                                    <!-- Omni Wheels Ø100mm -->
+                                    <circle cx="155" cy="305" r="25" fill="rgba(30,41,59,0.9)" stroke="#38bdf8" stroke-width="2"/>
+                                    <circle cx="155" cy="305" r="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                                    <circle cx="335" cy="305" r="25" fill="rgba(30,41,59,0.9)" stroke="#38bdf8" stroke-width="2"/>
+                                    <circle cx="335" cy="305" r="8" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+
+                                    <!-- Lower Frame Rail (25mm) + Lower Plate (17mm at Y=125..142) -->
+                                    <rect x="115" y="268" width="260" height="10" fill="#1e293b" stroke="#94a3b8" stroke-width="1"/>
+                                    <rect x="105" y="258" width="280" height="10" fill="#7c533f" stroke="#f59e0b" stroke-width="1.5"/>
+                                    <text x="115" y="252" fill="#fcd34d" font-family="IBM Plex Mono" font-size="9">LOWER DECK (17.0 mm)</text>
+
+                                    <!-- Battery + Ultrasonic on Lower Deck -->
+                                    <rect x="185" y="226" width="95" height="32" rx="3" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.2"/>
+                                    <text x="232" y="246" text-anchor="middle" fill="#93c5fd" font-family="IBM Plex Mono" font-size="9">LiFePO4</text>
+                                    <rect x="365" y="242" width="18" height="16" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+
+                                    <!-- 200mm Inter-Tier Posts -->
+                                    <rect x="135" y="158" width="14" height="100" fill="#1e293b" stroke="#94a3b8" stroke-width="1.2"/>
+                                    <rect x="340" y="158" width="14" height="100" fill="#1e293b" stroke="#94a3b8" stroke-width="1.2"/>
+
+                                    <!-- Upper Plate (17mm at Y=342..359) -->
+                                    <rect x="118" y="148" width="254" height="10" fill="#7c533f" stroke="#f59e0b" stroke-width="1.5"/>
+                                    <!-- Upper Controller Heatsink -->
+                                    <rect x="200" y="130" width="75" height="18" fill="#334155" stroke="#cbd5e1" stroke-width="1"/>
+
+                                    <!-- 200mm Camera Mast & Camera Head (Top = 589mm) -->
+                                    <rect x="330" y="48" width="10" height="100" fill="#1e293b" stroke="#94a3b8" stroke-width="1.2"/>
+                                    <rect x="318" y="34" width="32" height="14" rx="2" fill="#0f172a" stroke="#60a5fa" stroke-width="1.5"/>
+                                    <circle cx="353" cy="41" r="4" fill="#38bdf8"/>
+
+                                    <!-- Dimension: Tier Gap 200.0 mm -->
+                                    <line x1="82" y1="158" x2="82" y2="258" stroke="#60a5fa" stroke-width="1.2"/>
+                                    <line x1="75" y1="158" x2="115" y2="158" stroke="#60a5fa" stroke-width="1"/>
+                                    <line x1="75" y1="258" x2="105" y2="258" stroke="#60a5fa" stroke-width="1"/>
+                                    <rect x="42" y="198" width="80" height="18" rx="3" fill="#0f172a" stroke="#3b82f6"/>
+                                    <text x="82" y="211" text-anchor="middle" fill="#93c5fd" font-family="IBM Plex Mono" font-size="10">200.0 mm</text>
+
+                                    <!-- Dimension: Camera Mast 200.0 mm -->
+                                    <line x1="410" y1="48" x2="410" y2="148" stroke="#a855f7" stroke-width="1.2"/>
+                                    <line x1="350" y1="48" x2="416" y2="48" stroke="#a855f7" stroke-width="1"/>
+                                    <line x1="372" y1="148" x2="416" y2="148" stroke="#a855f7" stroke-width="1"/>
+                                    <rect x="370" y="88" width="80" height="18" rx="3" fill="#0f172a" stroke="#a855f7"/>
+                                    <text x="410" y="101" text-anchor="middle" fill="#d8b4fe" font-family="IBM Plex Mono" font-size="10">200.0 mm</text>
+
+                                    <!-- Dimension: Overall Height 589.0 mm -->
+                                    <line x1="462" y1="34" x2="462" y2="330" stroke="#10b981" stroke-width="1.2"/>
+                                    <line x1="355" y1="34" x2="468" y2="34" stroke="#10b981" stroke-width="1"/>
+                                    <rect x="412" y="175" width="82" height="18" rx="3" fill="#0f172a" stroke="#10b981"/>
+                                    <text x="453" y="188" text-anchor="middle" fill="#6ee7b7" font-family="IBM Plex Mono" font-size="10">589.0 mm</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 06: COMPLETE FILTERABLE BILL OF MATERIALS (BOM) & SUBSYSTEM SPECS -->
+                    <div id="cad-sec-06" class="scroll-mt-36 space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-200 dark:border-white/10 pb-6">
+                            <div>
+                                <div class="font-mono text-xs text-accent uppercase tracking-widest mb-2">06 // Complete Engineering Bill of Materials</div>
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Hardware &amp; CAD Component Schedule</h2>
+                            </div>
+
+                            <!-- Category Filter Buttons -->
+                            <div class="flex flex-wrap items-center gap-1.5 font-mono text-xs" id="bom-filters">
+                                <button data-cat="all" class="bom-filter-btn px-3 py-1.5 rounded-lg bg-accent text-white font-semibold transition-all cursor-pointer">All (16)</button>
+                                <button data-cat="Drive & Chassis" class="bom-filter-btn px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all cursor-pointer">Drive &amp; Chassis</button>
+                                <button data-cat="Control & Sensors" class="bom-filter-btn px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all cursor-pointer">Control &amp; Sensors</button>
+                                <button data-cat="Power & Conditioning" class="bom-filter-btn px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 hover:border-accent transition-all cursor-pointer">Power &amp; Filtering</button>
+                            </div>
+                        </div>
+
+                        <div class="rounded-3xl border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.02] backdrop-blur-md overflow-hidden shadow-xl">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-100/80 dark:bg-white/[0.04] font-mono text-[11px] uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                            <th class="py-3.5 px-5">Part ID</th>
+                                            <th class="py-3.5 px-5">Component Designation</th>
+                                            <th class="py-3.5 px-5">Subsystem Category</th>
+                                            <th class="py-3.5 px-5">Qty</th>
+                                            <th class="py-3.5 px-5">CAD Location / Tier</th>
+                                            <th class="py-3.5 px-5">Engineering Specification</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cad-bom-tbody" class="divide-y divide-gray-200 dark:divide-white/10 text-xs md:text-sm">
+                                        <!-- Populated dynamically or statically below -->
+                                        <tr data-cat="Control & Sensors" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-01</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">ESP32-WROOM-32 Module</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-mono text-[11px]">Control &amp; Sensors</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Upper Tier (Y = 361 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Dual-core 240 MHz MCU, processes IMU/Ultrasonic fusion &amp; 120&deg; Kiwi-Drive PWM</td>
+                                        </tr>
+                                        <tr data-cat="Drive & Chassis" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-02</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">200 RPM Geared DC Encoder Motors</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-purple-500/15 text-purple-400 font-mono text-[11px]">Drive &amp; Chassis</span></td>
+                                            <td class="py-3.5 px-5 font-mono">3</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Lower Base (90&deg;, 210&deg;, 330&deg;)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">12V geared motors with quadrature feedback coupled to &Oslash;100 mm dual-row omni wheels</td>
+                                        </tr>
+                                        <tr data-cat="Drive & Chassis" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-03</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">Cytron MDD10A Dual Motor Driver</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-purple-500/15 text-purple-400 font-mono text-[11px]">Drive &amp; Chassis</span></td>
+                                            <td class="py-3.5 px-5 font-mono">2</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Lower Tier (&plusmn;110, 147, 70 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Dual-channel 10A continuous / 30A peak H-bridge drivers for 3-wheel bidirectional control</td>
+                                        </tr>
+                                        <tr data-cat="Control & Sensors" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-04</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">HC-SR04 Ultrasonic Sensor</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-mono text-[11px]">Control &amp; Sensors</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Front Bumper (Z = +404 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">40 kHz acoustic time-of-flight ranging for 400 mm (Red) &amp; 600 mm (Blue) stand-off lock</td>
+                                        </tr>
+                                        <tr data-cat="Control & Sensors" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-05</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">MPU6050 6-Axis MEMS IMU</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-mono text-[11px]">Control &amp; Sensors</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Upper Tier (-120, 361, 60 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">3-axis gyroscope + 3-axis accelerometer over I2C (400 kHz) for heading &amp; yaw stabilization</td>
+                                        </tr>
+                                        <tr data-cat="Control & Sensors" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-06</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">Corner Mast Optical Colour Camera</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-mono text-[11px]">Control &amp; Sensors</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Mast Apex (Y = 578 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Mounted atop 200 mm vertical post for unobstructed Red vs. Blue scroll classification</td>
+                                        </tr>
+                                        <tr data-cat="Power & Conditioning" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-07</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">12V 10Ah LiFePO4 Battery Pack</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-mono text-[11px]">Power &amp; Filtering</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Lower Centroid (0, 172, -90 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">200 &times; 60 &times; 95 mm lithium iron phosphate pack; flat discharge curve &amp; low CoG</td>
+                                        </tr>
+                                        <tr data-cat="Power & Conditioning" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-08</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">MP1584 DC-DC Buck Converter</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-mono text-[11px]">Power &amp; Filtering</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Upper Logic Deck</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Steps down 12.8V battery bus to regulated 5.0V (3A max) for logic &amp; sensor array</td>
+                                        </tr>
+                                        <tr data-cat="Power & Conditioning" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-09</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">Inline Blade Fuse &amp; Main Isolation Switch</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-mono text-[11px]">Power &amp; Filtering</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1 Set</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Lower Tier (0, 155, 90 mm)</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Overcurrent short-circuit protection and physical emergency cutoff switch</td>
+                                        </tr>
+                                        <tr data-cat="Power & Conditioning" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-10</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">Power Distribution Screw Terminal</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-mono text-[11px]">Power &amp; Filtering</span></td>
+                                            <td class="py-3.5 px-5 font-mono">1</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Lower Power Bay</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">10 mm pitch multi-pole bus bar splitting 12V traction and buck regulator feeds</td>
+                                        </tr>
+                                        <tr data-cat="Power & Conditioning" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-11</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">470–1000 &micro;F Electrolytic &amp; 0.1 &micro;F Ceramic Caps</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-amber-500/15 text-amber-500 font-mono text-[11px]">Power &amp; Filtering</span></td>
+                                            <td class="py-3.5 px-5 font-mono">10 + 2</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Power Rails &amp; IC Pins</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">Bulk transient reservoir bank + high-frequency commutator noise decoupling</td>
+                                        </tr>
+                                        <tr data-cat="Drive & Chassis" class="hover:bg-accent/5 transition-colors">
+                                            <td class="py-3.5 px-5 font-mono text-xs text-accent font-semibold">AOS-12</td>
+                                            <td class="py-3.5 px-5 font-semibold text-gray-900 dark:text-white">Triangular Structural Plates &amp; 200 mm Stand-Offs</td>
+                                            <td class="py-3.5 px-5"><span class="px-2 py-0.5 rounded bg-purple-500/15 text-purple-400 font-mono text-[11px]">Drive &amp; Chassis</span></td>
+                                            <td class="py-3.5 px-5 font-mono">2 + 4</td>
+                                            <td class="py-3.5 px-5 font-mono text-xs text-gray-500">Full Chassis Frame</td>
+                                            <td class="py-3.5 px-5 text-gray-600 dark:text-gray-300">17.0 mm composite wood decks (600/684 mm &amp; 636.6 mm) + &Oslash;32&times;200 mm posts</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -901,7 +1660,6 @@
                         
                         <!-- Video Element (Strictly no autoplay; plays only when commanded) -->
                         <video id="days-video" class="w-full h-full object-cover cursor-pointer" preload="metadata" playsinline poster="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1280&q=80&auto=format&fit=crop">
-                            <!-- Replace src with your local video file if desired, e.g. src="my-video.mp4" -->
                             <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
                             Your browser does not support HTML5 video.
                         </video>
@@ -1490,7 +2248,6 @@
             const container = document.getElementById('hero-grid-motion');
             if (!container) return;
 
-            // 12 Curated Project & Engineering Photos
             const heroPhotos = [
                 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=640&q=75&auto=format&fit=crop',
                 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=640&q=75&auto=format&fit=crop',
@@ -1523,12 +2280,12 @@
                 grayscale: false,
                 theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
                 onTileClick: () => {
-                    // Clicking any photo in the GridMotion redirects to Gallery
                     switchTab('days');
                 }
             });
         }
 
+        // --- STREAMING_CHUNK:Initializing ShapeGrid, ScrollExpand, Accordion, and Gallery Video... -->
         // --- 3. ShapeGrid Canvas Background ---
         function initShapeGrid() {
             const canvas = document.getElementById('shapegrid-canvas');
@@ -1537,9 +2294,8 @@
             let offset = 0;
             const size = 50; 
             
-            // Interaction state
             let mouse = { x: -1000, y: -1000 };
-            const trails = new Map(); // Store grid cell alpha values
+            const trails = new Map();
 
             function resize() {
                 width = window.innerWidth;
@@ -1558,20 +2314,17 @@
             function draw() {
                 ctx.clearRect(0, 0, width, height);
                 
-                // Panning logic
                 offset += 0.3;
                 if (offset > size) offset = 0;
 
-                // Calculate which cell the mouse is in
                 const cellX = Math.floor((mouse.x - (offset % size) + size) / size) * size + (offset % size) - size;
                 const cellY = Math.floor((mouse.y - (offset % size) + size) / size) * size + (offset % size) - size;
                 
                 const cellKey = `${cellX},${cellY}`;
                 if (mouse.x > 0 && mouse.y > 0) {
-                    trails.set(cellKey, 1.0); // Full opacity on hover
+                    trails.set(cellKey, 1.0);
                 }
 
-                // Draw Base Grid (Adapts slightly to theme)
                 const isDark = document.documentElement.classList.contains('dark');
                 ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.04)';
                 ctx.lineWidth = 1;
@@ -1584,7 +2337,6 @@
                 }
                 ctx.stroke();
 
-                // Draw fading trails
                 for (let [key, alpha] of trails.entries()) {
                     if (alpha <= 0.01) {
                         trails.delete(key);
@@ -1592,10 +2344,10 @@
                     }
                     
                     const [cx, cy] = key.split(',').map(Number);
-                    ctx.fillStyle = `rgba(59, 130, 246, ${alpha * 0.2})`; // Accent color trail
+                    ctx.fillStyle = `rgba(59, 130, 246, ${alpha * 0.2})`;
                     ctx.fillRect(cx, cy, size, size);
                     
-                    trails.set(key, alpha * 0.92); // Decay rate
+                    trails.set(key, alpha * 0.92);
                 }
                 
                 requestAnimationFrame(draw);
@@ -1609,17 +2361,14 @@
             const frame = document.getElementById('hero-frame');
             
             function onScroll() {
-                // Only process if Home is active
                 if(!document.getElementById('page-home').classList.contains('active')) return;
 
                 const scrollY = window.scrollY;
                 const maxScroll = container.offsetHeight - window.innerHeight;
                 let progress = Math.max(0, Math.min(1, scrollY / maxScroll));
                 
-                // Smooth easing
                 const easeProgress = progress * progress * (3 - 2 * progress);
 
-                // Calculate mapped values
                 const inset = 20 - (easeProgress * 20);
                 const radius = 30 - (easeProgress * 30);
                 const scale = 1.2 - (easeProgress * 0.2);
@@ -1630,7 +2379,7 @@
             }
 
             window.addEventListener('scroll', onScroll);
-            onScroll(); // Init
+            onScroll();
         }
 
         // --- 5. Accordion Gallery (Team) ---
@@ -1638,13 +2387,11 @@
             const panels = document.querySelectorAll('.ag-panel');
             
             panels.forEach(panel => {
-                // Initial State
                 gsap.set(panel, { flexGrow: 1, rotateY: 0, z: 0 });
 
                 panel.addEventListener('mouseenter', () => {
                     panel.classList.add('active-hover');
                     
-                    // Animate hovered panel to expand and pop out slightly
                     gsap.to(panel, { 
                         flexGrow: 4, 
                         rotateY: 0, 
@@ -1655,7 +2402,6 @@
                     });
                     gsap.to(panel.querySelector('img'), { scale: 1, duration: 0.6, ease: "power3.out" });
 
-                    // Animate siblings in the same row to shrink and tilt
                     const siblings = Array.from(panel.parentNode.children).filter(el => el !== panel);
                     siblings.forEach(sibling => {
                         const isLeft = Array.from(panel.parentNode.children).indexOf(sibling) < Array.from(panel.parentNode.children).indexOf(panel);
@@ -1674,7 +2420,6 @@
                 panel.addEventListener('mouseleave', () => {
                     panel.classList.remove('active-hover');
                     
-                    // Reset all panels in row
                     Array.from(panel.parentNode.children).forEach(el => {
                         gsap.to(el, { 
                             flexGrow: 1, 
@@ -1688,7 +2433,6 @@
                     });
                 });
 
-                // Click opens modal
                 panel.addEventListener('click', () => {
                     openModal({
                         img: panel.dataset.img,
@@ -1700,10 +2444,8 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Configuring Gallery cards and custom 16:9 video controller... ---
         // --- 5B. Gallery Square Cards & Custom 16:9 Video Player ---
         function initOurDaysSection() {
-            // Allow clicking any of the 10 square day boxes to view details in modal
             document.querySelectorAll('.day-card').forEach(card => {
                 card.addEventListener('click', () => {
                     openModal({
@@ -1715,7 +2457,6 @@
                 });
             });
 
-            // Custom Video Controls (Strictly user-initiated playback)
             const video = document.getElementById('days-video');
             const wrapper = document.getElementById('days-video-wrapper');
             const centerPlayBtn = document.getElementById('video-center-play');
@@ -1735,7 +2476,6 @@
 
             if (!video) return;
 
-            // Ensure video starts paused and at initial volume
             video.pause();
             video.volume = parseFloat(volumeSlider.value);
 
@@ -1792,7 +2532,6 @@
                 }
             });
 
-            // Sound / Volume adjustment
             function syncVolumeUI() {
                 const effectivelyMuted = video.muted || video.volume === 0;
                 iconVolOn.classList.toggle('hidden', effectivelyMuted);
@@ -1813,12 +2552,10 @@
                 syncVolumeUI();
             });
 
-            // Playback Speed adjustment
             speedSelect.addEventListener('change', () => {
                 video.playbackRate = parseFloat(speedSelect.value);
             });
 
-            // Fullscreen toggle
             fsBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
                     if (wrapper.requestFullscreen) wrapper.requestFullscreen();
@@ -1828,6 +2565,7 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Initializing Materials Masonry Gallery and Shared Modal... -->
         // --- 6. Uniform Grid (Materials) ---
         const materialsData = [
             { id: "m1", img: "https://commons.wikimedia.org/wiki/Special:FilePath/ESP32_Espressif_ESP-WROOM-32_Shielded.jpg?width=800", height: 350, name: "ESP32 Wroom", role: "Main Microcontroller", desc: "A dual-core 32-bit microcontroller module with integrated Wi-Fi and Bluetooth. It serves as the primary onboard computer, processing sensor data, computing inverse kinematics for the kiwi drive, and sending PWM signals to the motor drivers." },
@@ -1935,7 +2673,6 @@
                     wrapper.appendChild(imgDiv);
                     this.container.appendChild(wrapper);
 
-                    // Hover effects
                     if(this.config.scaleOnHover) {
                         wrapper.addEventListener('mouseenter', () => {
                             gsap.to(wrapper, { scale: this.config.hoverScale, duration: 0.3, ease: 'power2.out' });
@@ -1945,7 +2682,6 @@
                         });
                     }
 
-                    // Click opens modal
                     wrapper.addEventListener('click', () => {
                         openModal({
                             img: item.img,
@@ -1955,7 +2691,6 @@
                         });
                     });
 
-                    // Animate In
                     gsap.to(wrapper, {
                         x: item.x,
                         y: item.y,
@@ -2030,7 +2765,7 @@
             if(e.key === 'Escape' && modal.classList.contains('opacity-100')) closeModal();
         });
 
-        // --- STREAMING_CHUNK:Initializing 3D WebGL CAD Robot Viewer... -->
+        // --- STREAMING_CHUNK:Initializing 3D WebGL CAD Robot Viewer and Interactive Kinematics Solver... -->
         // --- 8. 3D CAD Viewer (Tri-Tier Robot WebGL) ---
         function initCadProject() {
             var S = 0.001;
@@ -2435,6 +3170,27 @@
                 setPressed(bE, eT);
             }
 
+            // Expose helper so Section 02 & Section 05 cards can focus/explode the 3D CAD viewer
+            window.inspectCadLayer = function(layer) {
+                stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (layer === 'base') {
+                    eT = 0; setPressed(bE, 0);
+                    viewT = { az: 2.35, el: 0.28, dist: 2.6 };
+                } else if (layer === 'low') {
+                    eT = 1; setPressed(bE, 1);
+                    viewT = { az: 2.5, el: 0.42, dist: 2.7 };
+                } else if (layer === 'posts') {
+                    eT = 0; setPressed(bE, 0);
+                    viewT = { az: Math.PI / 2, el: 0.08, dist: 3.1 };
+                } else if (layer === 'top') {
+                    eT = 1; setPressed(bE, 1);
+                    viewT = { az: 2.7, el: 0.65, dist: 2.8 };
+                } else if (layer === 'topview') {
+                    eT = 0; setPressed(bE, 0);
+                    viewT = { az: Math.PI, el: 1.45, dist: 3.0 };
+                }
+            };
+
             cv.addEventListener('pointerdown', function(e) {
                 cv.setPointerCapture(e.pointerId);
                 pts.set(e.pointerId, [e.clientX, e.clientY]);
@@ -2458,7 +3214,6 @@
             cv.addEventListener('pointerup', function(e) {
                 if (pts.size === 1 && downPos) {
                     var moveDist = Math.hypot(e.clientX - downPos[0], e.clientY - downPos[1]);
-                    // If user clicks without dragging, split/unsplit the CAD model parts
                     if (moveDist < 5) {
                         toggleExplode();
                     }
@@ -2628,7 +3383,6 @@
                 var dt = Math.min(0.05, (now - last) / 1000);
                 last = now;
 
-                // Smoothly animate exploded parts
                 ex += (eT - ex) * Math.min(1, dt * 6);
                 gLow.position.y = ex * 0.09;
                 gPosts.position.y = ex * 0.16;
@@ -2649,7 +3403,6 @@
                 }
                 placeCamera();
 
-                /* Ultrasonic distance beam */
                 var cy = Math.cos(sim.yaw), sy = Math.sin(sim.yaw);
                 var tipx = sim.x + FRONT * sy, tipz = sim.z + FRONT * cy;
                 var rangeM = cy > 0.25 ? (W - tipz) / cy : -1;
@@ -2668,7 +3421,6 @@
                     beamLabel.hidden = true;
                 }
 
-                /* Dimension labels */
                 var showNow = showDims && ex < 0.02 && sim.state === 'idle';
                 dimGroup.visible = showNow;
                 for (var i = 0; i < dimLabels.length; i++) {
@@ -2684,7 +3436,6 @@
                 tagRed.classList.toggle('on', redOn);
                 tagBlue.classList.toggle('on', blueOn);
 
-                /* Live Telemetry Readout */
                 telT += dt;
                 if (telT > 0.1) {
                     telT = 0;
@@ -2712,6 +3463,97 @@
             requestAnimationFrame(tick);
         }
 
+        // --- 9. CAD Deep-Dive Interactive Kinematics Solver & BOM Filter ---
+        function initCadDeepDiveInteractions() {
+            const vxSlider = document.getElementById('kin-vx');
+            const vzSlider = document.getElementById('kin-vz');
+            const wSlider = document.getElementById('kin-w');
+            const resetBtn = document.getElementById('kin-reset');
+            const vecLine = document.getElementById('kin-vec-line');
+
+            if (vxSlider && vzSlider && wSlider) {
+                const R = 0.33; // 330 mm
+                const r = 0.05; // 50 mm wheel radius
+
+                function updateKinematics() {
+                    const vxMm = parseFloat(vxSlider.value);
+                    const vzMm = parseFloat(vzSlider.value);
+                    const wRad = parseFloat(wSlider.value);
+
+                    document.getElementById('kin-vx-val').textContent = `${vxMm > 0 ? '+' : ''}${vxMm} mm/s`;
+                    document.getElementById('kin-vz-val').textContent = `${vzMm > 0 ? '+' : ''}${vzMm} mm/s`;
+                    document.getElementById('kin-w-val').textContent = `${wRad > 0 ? '+' : ''}${wRad.toFixed(2)} rad/s`;
+
+                    const vx = vxMm / 1000;
+                    const vz = vzMm / 1000;
+
+                    // Kiwi-drive inverse kinematics (rad/s) -> RPM
+                    const w1 = (-1.0 * vx + 0.0 * vz - R * wRad) / r;
+                    const w2 = (0.5 * vx - 0.866025 * vz - R * wRad) / r;
+                    const w3 = (0.5 * vx + 0.866025 * vz - R * wRad) / r;
+
+                    const rpm1 = (w1 * 60) / (2 * Math.PI);
+                    const rpm2 = (w2 * 60) / (2 * Math.PI);
+                    const rpm3 = (w3 * 60) / (2 * Math.PI);
+
+                    const fmtRpm = (val) => `${val >= 0 ? '+' : ''}${val.toFixed(1)} RPM`;
+                    const fmtPwm = (val) => `PWM: ${Math.min(100, Math.round((Math.abs(val) / 200) * 100))}%`;
+
+                    document.getElementById('kin-rpm-1').textContent = fmtRpm(rpm1);
+                    document.getElementById('kin-rpm-2').textContent = fmtRpm(rpm2);
+                    document.getElementById('kin-rpm-3').textContent = fmtRpm(rpm3);
+
+                    document.getElementById('kin-pwm-1').textContent = fmtPwm(rpm1);
+                    document.getElementById('kin-pwm-2').textContent = fmtPwm(rpm2);
+                    document.getElementById('kin-pwm-3').textContent = fmtPwm(rpm3);
+
+                    // Update SVG Vector Arrow
+                    if (vecLine) {
+                        const tx = (vxMm / 350) * 75;
+                        const ty = -(vzMm / 350) * 75;
+                        vecLine.setAttribute('x2', tx.toFixed(1));
+                        vecLine.setAttribute('y2', ty.toFixed(1));
+                    }
+                }
+
+                vxSlider.addEventListener('input', updateKinematics);
+                vzSlider.addEventListener('input', updateKinematics);
+                wSlider.addEventListener('input', updateKinematics);
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', () => {
+                        vxSlider.value = 0;
+                        vzSlider.value = 250;
+                        wSlider.value = 0;
+                        updateKinematics();
+                    });
+                }
+                updateKinematics();
+            }
+
+            // BOM Category Filter
+            const filterBtns = document.querySelectorAll('.bom-filter-btn');
+            const rows = document.querySelectorAll('#cad-bom-tbody tr');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const cat = btn.dataset.cat;
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-accent', 'text-white', 'font-semibold');
+                        b.classList.add('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-gray-300');
+                    });
+                    btn.classList.remove('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-gray-300');
+                    btn.classList.add('bg-accent', 'text-white', 'font-semibold');
+
+                    rows.forEach(row => {
+                        if (cat === 'all' || row.dataset.cat === cat) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
         // --- Bootstrapping ---
         document.addEventListener('DOMContentLoaded', () => {
             initShapeGrid();
@@ -2720,6 +3562,7 @@
             initAccordionGallery();
             initOurDaysSection();
             initCadProject();
+            initCadDeepDiveInteractions();
             
             // Store instance globally so we can refresh it on tab change
             window.masonryInstance = new MasonryGallery('masonry-container', materialsData);
