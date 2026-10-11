@@ -386,14 +386,18 @@
 
     <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-dark/70 dark:bg-dark/70 bg-white/70 border-b border-white/10 dark:border-white/10 border-gray-200 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-xl font-bold tracking-tighter text-white dark:text-white text-gray-900 cursor-pointer" onclick="switchTab('home')">
-                STUDIO<span class="text-accent">X</span>
+            <div class="flex items-center gap-2 text-xl font-bold tracking-tighter text-white dark:text-white text-gray-900 cursor-pointer" onclick="switchTab('home')">
+                <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m10 10-5-6-3-2 1 5 6 6m5-3 5-6 3-2-1 5-6 6M9 12l-4 9m10-9 4 9" />
+                    <circle cx="12" cy="11" r="2" />
+                </svg>
+                <span>AOSAR</span>
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <button onclick="switchTab('home')" class="nav-link active text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="home">Home</button>
-                <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="cad">CAD Project</button>
+                <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="cad">CAD</button>
                 <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="materials">Materials</button>
-                <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="days">Our Days</button>
+                <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="days">Gallery</button>
                 
                 <!-- Theme Toggle Button -->
                 <button id="theme-toggle" class="p-2 rounded-full bg-white/10 dark:bg-white/10 bg-gray-200 text-gray-200 dark:text-gray-200 text-gray-700 hover:bg-white/20 dark:hover:bg-white/20 hover:bg-gray-300 transition-colors focus:outline-none" aria-label="Toggle Theme">
@@ -420,13 +424,13 @@
                     
                     <!-- Center Hero Overlay Text & 2 Action Buttons -->
                     <div class="absolute z-20 text-center pointer-events-none px-6 flex flex-col items-center">
-                        <h1 class="text-6xl md:text-8xl font-black text-white dark:text-white text-gray-900 tracking-tighter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">INNOVATE</h1>
-                        <p class="text-xl md:text-2xl text-gray-200 dark:text-gray-200 text-gray-800 mt-3 font-light drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">Scroll to explore · Click any photo for Our Days</p>
+                        <h1 class="text-6xl md:text-8xl font-black text-white dark:text-white text-gray-900 tracking-tighter drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">Interdomain</h1>
+                        <p class="text-xl md:text-2xl text-gray-200 dark:text-gray-200 text-gray-800 mt-3 font-light drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">Team AOSAR · Scroll to explore</p>
                         
                         <!-- 2 Action Buttons -->
                         <div class="mt-8 flex flex-wrap items-center justify-center gap-4 pointer-events-auto">
                             <button onclick="switchTab('cad')" class="px-7 py-3.5 rounded-full bg-accent hover:bg-accentDark text-white font-semibold text-sm tracking-wide shadow-lg shadow-accent/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
-                                Explore CAD Project
+                                Explore CAD
                             </button>
                             <button onclick="scrollToTeam()" class="px-7 py-3.5 rounded-full bg-black/60 dark:bg-white/10 hover:bg-black/80 dark:hover:bg-white/20 text-white backdrop-blur-md border border-white/20 font-semibold text-sm tracking-wide shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
                                 Meet the Team
@@ -741,11 +745,11 @@
             </section>
         </div>
 
-        <!-- PAGE 3: OUR DAYS (10 Smaller Square Boxes + 16:9 Custom Video Showcase) -->
+        <!-- PAGE 3: GALLERY (10 Smaller Square Boxes + 16:9 Custom Video Showcase) -->
         <div id="page-days" class="page-section pt-32 pb-24">
             <section class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Our Days</h2>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Gallery</h2>
                     <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Documenting the journey. A collection of behind-the-scenes progress, sketches, and daily milestones.</p>
                 </div>
                 
@@ -994,8 +998,8 @@
         <div id="page-materials" class="page-section pt-32 pb-24 min-h-screen">
             <section class="max-w-7xl mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Materials</h2>
-                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design. Built with custom GSAP Grid.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Materials Used</h2>
+                    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Explore the physical components shaping our design.</p>
                 </div>
                 
                 <div id="masonry-container" class="masonry-list w-full relative">
@@ -1005,7 +1009,7 @@
         </div>
     </main>
 
-    <!-- Reusable Modal Container (Used for Team, Materials, and Our Days) -->
+    <!-- Reusable Modal Container (Used for Team, Materials, and Gallery) -->
     <div id="shared-modal" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-500 flex items-center justify-center p-6">
         <button id="modal-close" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1067,7 +1071,7 @@
 
         // --- 1. SPA Navigation Logic ---
         function switchTab(tabId) {
-            // Pause Our Days video if navigating away from 'days'
+            // Pause Gallery video if navigating away from 'days'
             const daysVideo = document.getElementById('days-video');
             if (tabId !== 'days' && daysVideo && !daysVideo.paused) {
                 daysVideo.pause();
@@ -1324,7 +1328,7 @@
                         const tileData = sequence[k % l.perRow];
                         const tileDiv = document.createElement('div');
                         tileDiv.className = 'grid-motion__tile';
-                        tileDiv.setAttribute('title', 'Click to view Our Days');
+                        tileDiv.setAttribute('title', 'Click to view Gallery');
 
                         if (tileData.kind === 'image') {
                             const img = document.createElement('img');
@@ -1519,7 +1523,7 @@
                 grayscale: false,
                 theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
                 onTileClick: () => {
-                    // Clicking any photo in the GridMotion redirects to Our Days page
+                    // Clicking any photo in the GridMotion redirects to Gallery
                     switchTab('days');
                 }
             });
@@ -1696,8 +1700,8 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Configuring Our Days cards and custom 16:9 video controller... ---
-        // --- 5B. Our Days Square Cards & Custom 16:9 Video Player ---
+        // --- STREAMING_CHUNK:Configuring Gallery cards and custom 16:9 video controller... ---
+        // --- 5B. Gallery Square Cards & Custom 16:9 Video Player ---
         function initOurDaysSection() {
             // Allow clicking any of the 10 square day boxes to view details in modal
             document.querySelectorAll('.day-card').forEach(card => {
