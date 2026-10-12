@@ -396,23 +396,28 @@
 
     <canvas id="shapegrid-canvas"></canvas>
 
-    <nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-dark/70 dark:bg-dark/70 bg-white/70 border-b border-white/10 dark:border-white/10 border-gray-200 transition-all duration-300" id="navbar">
+<nav class="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-dark/70 border-b border-gray-200 dark:border-white/10 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 text-xl font-bold tracking-tighter text-white dark:text-white text-gray-900 cursor-pointer" onclick="switchTab('home')">
+            <div class="flex items-center gap-2 text-xl font-bold tracking-tighter text-gray-900 dark:text-white cursor-pointer" onclick="switchTab('home'); closeMobileNav();">
                 <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m10 10-5-6-3-2 1 5 6 6m5-3 5-6 3-2-1 5-6 6M9 12l-4 9m10-9 4 9" />
                     <circle cx="12" cy="11" r="2" />
                 </svg>
                 <span>AOSAR</span>
             </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <button onclick="switchTab('home')" class="nav-link active text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="home">Home</button>
-                <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="cad">CAD</button>
-                <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="materials">Materials</button>
-                <button onclick="switchTab('days')" class="nav-link text-sm text-gray-300 dark:text-gray-300 text-gray-600 hover:text-white dark:hover:text-white hover:text-gray-900 transition-colors" data-target="days">Gallery</button>
-                
-                <!-- Theme Toggle Button -->
-                <button id="theme-toggle" class="p-2 rounded-full bg-white/10 dark:bg-white/10 bg-gray-200 text-gray-200 dark:text-gray-200 text-gray-700 hover:bg-white/20 dark:hover:bg-white/20 hover:bg-gray-300 transition-colors focus:outline-none" aria-label="Toggle Theme">
+
+            <!-- Right Controls (Desktop Links + Theme Toggle + Mobile Hamburger) -->
+            <div class="flex items-center gap-3 md:gap-8">
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="switchTab('home')" class="nav-link active text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors" data-target="home">Home</button>
+                    <button onclick="switchTab('cad')" class="nav-link text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors" data-target="cad">CAD</button>
+                    <button onclick="switchTab('materials')" class="nav-link text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors" data-target="materials">Materials</button>
+                    <button onclick="switchTab('days')" class="nav-link text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors" data-target="days">Gallery</button>
+                </div>
+
+                <!-- Theme Toggle Button (Visible on both Mobile & Desktop) -->
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-white/20 transition-colors focus:outline-none" aria-label="Toggle Theme">
                     <!-- Sun Icon (Shown in Dark Mode) -->
                     <svg id="theme-icon-sun" class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -422,7 +427,27 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
                     </svg>
                 </button>
+
+                <!-- Main Mobile Hamburger Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileNav()" aria-expanded="false" aria-label="Open Navigation Menu" class="md:hidden p-2 rounded-lg bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-white/20 transition-colors focus:outline-none">
+                    <!-- Hamburger Icon -->
+                    <svg id="main-ham-open" class="w-5 h-5 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <!-- Close X Icon -->
+                    <svg id="main-ham-close" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
+        </div>
+
+        <!-- Mobile Dropdown Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-white/10 bg-white/95 dark:bg-[#08080c]/95 backdrop-blur-xl px-6 py-4 space-y-2">
+            <button onclick="switchTab('home'); closeMobileNav();" class="nav-link active block w-full text-left py-2.5 px-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/10 transition-colors" data-target="home">Home</button>
+            <button onclick="switchTab('cad'); closeMobileNav();" class="nav-link block w-full text-left py-2.5 px-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/10 transition-colors" data-target="cad">CAD</button>
+            <button onclick="switchTab('materials'); closeMobileNav();" class="nav-link block w-full text-left py-2.5 px-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/10 transition-colors" data-target="materials">Materials</button>
+            <button onclick="switchTab('days'); closeMobileNav();" class="nav-link block w-full text-left py-2.5 px-3 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/10 transition-colors" data-target="days">Gallery</button>
         </div>
     </nav>
 
@@ -470,15 +495,15 @@
                 <div class="accordion-wrapper" id="team-accordion">
                     <!-- Row 1 -->
                     <div class="accordion-row">
-                        <div class="ag-panel" data-name="Abhishek Kumar" data-role="WebDev" data-img="https://picsum.photos/id/1005/600/800" data-desc="Abhishek Kumar is a skilled web developer responsible for building and maintaining the team's online presence.">
-                            <img src="https://picsum.photos/id/1005/600/800" alt="Abhishek">
+                        <div class="ag-panel" data-name="Abhishek Kumar" data-role="WebDev" data-img="WhatsApp Image 2026-10-12 at 21.30.07.jpeg" data-desc="Abhishek Kumar is a skilled web developer responsible for building and maintaining the team's online presence.">
+                            <img src="WhatsApp Image 2026-10-12 at 21.30.07.jpeg" alt="Abhishek">
                             <div class="panel-content">
                                 <h3 class="text-white font-bold text-xl">Abhishek Kumar</h3>
                                 <p class="text-accent text-sm">Web Developer</p>
                             </div>
                         </div>
-                        <div class="ag-panel" data-name="Akhilesh" data-role="Corporate" data-img="https://picsum.photos/id/1011/600/800" data-desc="Akhilesh is a corporate member with extensive experience in business development and strategic planning.">
-                            <img src="https://picsum.photos/id/1011/600/800" alt="Akhilesh">
+                        <div class="ag-panel" data-name="Akhilesh" data-role="Corporate" data-img="WhatsApp Image 2026-10-12 at 21.31.03.jpeg" data-desc="Akhilesh is a corporate member with extensive experience in business development and strategic planning.">
+                            <img src="WhatsApp Image 2026-10-12 at 21.31.03.jpeg" alt="Akhilesh">
                             <div class="panel-content">
                                 <h3 class="text-white font-bold text-xl">Akhilesh</h3>
                                 <p class="text-accent text-sm">Corporate Member</p>
@@ -498,11 +523,11 @@
                                 <p class="text-accent text-sm">Materials Lead</p>
                             </div>
                         </div>
-                        <div class="ag-panel" data-name="Marcus Roe" data-role="Safety Protocol" data-img="https://picsum.photos/id/1027/600/800" data-desc="Ensures all systems meet strict international safety parameters.">
-                            <img src="https://picsum.photos/id/1027/600/800" alt="Marcus">
+                        <div class="ag-panel" data-name="Yohaan" data-role="VFX/GFX" data-img="WhatsApp Image 2026-10-12 at 21.32.03.jpeg" data-desc="Yohaan is a creative member responsible for visual effects and graphics design.">
+                            <img src="WhatsApp Image 2026-10-12 at 21.32.03.jpeg" alt="Yohaan">
                             <div class="panel-content">
-                                <h3 class="text-white font-bold text-xl">Marcus Roe</h3>
-                                <p class="text-accent text-sm">Safety Protocol</p>
+                                <h3 class="text-white font-bold text-xl">Yohaan</h3>
+                                <p class="text-accent text-sm">VFX/GFX member</p>
                             </div>
                         </div>
                     </div>
@@ -761,18 +786,43 @@
                 <div class="pt-8 border-t border-gray-200 dark:border-white/10 space-y-20">
 
                     <!-- Sticky Quick-Jump Engineering Sub-Navigation -->
-                    <div class="sticky top-20 z-30 py-3 px-4 rounded-2xl bg-white/85 dark:bg-[#0b0e14]/85 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-lg flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-accent"></span>
-                            <span class="font-mono text-xs uppercase tracking-widest font-semibold text-gray-800 dark:text-gray-200">CAD Dossier // AOSAR-TR01</span>
+                    <div class="sticky top-20 z-30 py-3 px-4 rounded-2xl bg-white/90 dark:bg-[#0b0e14]/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-lg">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                                <span class="font-mono text-xs uppercase tracking-widest font-semibold text-gray-800 dark:text-gray-200">CAD Dossier // AOSAR-TR01</span>
+                            </div>
+
+                            <!-- Desktop Sub-Nav Links -->
+                            <div class="hidden md:flex flex-wrap items-center gap-1.5 text-xs font-mono">
+                                <a href="#cad-sec-01" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">01.Problem</a>
+                                <a href="#cad-sec-02" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">02.Tiers</a>
+                                <a href="#cad-sec-03" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">03.Kinematics</a>
+                                <a href="#cad-sec-04" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">04.Architecture</a>
+                                <a href="#cad-sec-05" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">05.Blueprints</a>
+                                <a href="#cad-sec-06" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">06.BOM</a>
+                            </div>
+
+                            <!-- Mobile CAD Sub-Nav Hamburger Button -->
+                            <button id="cad-subnav-btn" onclick="toggleCadSubNav()" aria-expanded="false" aria-label="Toggle CAD Sections Menu" class="md:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-200 font-mono text-xs hover:bg-accent hover:text-white transition-colors focus:outline-none">
+                                <span>Sections</span>
+                                <svg id="cad-ham-open" class="w-4 h-4 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <svg id="cad-ham-close" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
-                            <a href="#cad-sec-01" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">01.Problem</a>
-                            <a href="#cad-sec-02" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">02.Tiers</a>
-                            <a href="#cad-sec-03" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">03.Kinematics</a>
-                            <a href="#cad-sec-04" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">04.Architecture</a>
-                            <a href="#cad-sec-05" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">05.Blueprints</a>
-                            <a href="#cad-sec-06" class="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">06.BOM</a>
+
+                        <!-- Mobile CAD Sub-Nav Dropdown Grid -->
+                        <div id="cad-mobile-subnav" class="hidden md:hidden mt-3 pt-3 border-t border-gray-200 dark:border-white/10 grid grid-cols-2 gap-2 text-xs font-mono">
+                            <a href="#cad-sec-01" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">01.Problem</a>
+                            <a href="#cad-sec-02" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">02.Tiers</a>
+                            <a href="#cad-sec-03" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">03.Kinematics</a>
+                            <a href="#cad-sec-04" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">04.Architecture</a>
+                            <a href="#cad-sec-05" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">05.Blueprints</a>
+                            <a href="#cad-sec-06" onclick="closeCadSubNav()" class="px-3 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-accent hover:text-white text-gray-700 dark:text-gray-300 transition-colors">06.BOM</a>
                         </div>
                     </div>
 
@@ -1824,6 +1874,58 @@
             } else if (teamSection) {
                 teamSection.scrollIntoView({ behavior: 'smooth' });
             }
+        }
+        // --- Mobile Hamburger Menus (Main Navbar & CAD Sub-Navbar) ---
+        function toggleMobileNav() {
+            const menu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('main-ham-open');
+            const closeIcon = document.getElementById('main-ham-close');
+            const btn = document.getElementById('mobile-menu-btn');
+            if (!menu) return;
+
+            const isHidden = menu.classList.toggle('hidden');
+            openIcon.classList.toggle('hidden', !isHidden);
+            closeIcon.classList.toggle('hidden', isHidden);
+            btn.setAttribute('aria-expanded', String(!isHidden));
+        }
+
+        function closeMobileNav() {
+            const menu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('main-ham-open');
+            const closeIcon = document.getElementById('main-ham-close');
+            const btn = document.getElementById('mobile-menu-btn');
+            if (!menu || menu.classList.contains('hidden')) return;
+
+            menu.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleCadSubNav() {
+            const subnav = document.getElementById('cad-mobile-subnav');
+            const openIcon = document.getElementById('cad-ham-open');
+            const closeIcon = document.getElementById('cad-ham-close');
+            const btn = document.getElementById('cad-subnav-btn');
+            if (!subnav) return;
+
+            const isHidden = subnav.classList.toggle('hidden');
+            openIcon.classList.toggle('hidden', !isHidden);
+            closeIcon.classList.toggle('hidden', isHidden);
+            btn.setAttribute('aria-expanded', String(!isHidden));
+        }
+
+        function closeCadSubNav() {
+            const subnav = document.getElementById('cad-mobile-subnav');
+            const openIcon = document.getElementById('cad-ham-open');
+            const closeIcon = document.getElementById('cad-ham-close');
+            const btn = document.getElementById('cad-subnav-btn');
+            if (!subnav || subnav.classList.contains('hidden')) return;
+
+            subnav.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
         }
 
         // --- 1. SPA Navigation Logic ---
@@ -3567,4 +3669,4 @@
 
     </script>
 </body>
-</html>
+</html>₹
